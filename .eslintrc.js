@@ -14,8 +14,10 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   rules: {
+    "comma-dangle": ["error", "always"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "import/no-unresolved": "error",
+    "prettier/prettier": ["error", { "htmlWhitespaceSensitivity": "ignore" }],
   },
 };
