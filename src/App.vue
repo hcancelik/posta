@@ -3,11 +3,11 @@
     <Navigation />
     <div class="flex-1 flex overflow-hidden">
       <router-view v-slot="{ Component }">
-        <transition name="slide-fade" mode="out-in">
-          <div class="flex-1 overflow-y-scroll">
+        <div class="flex-1 overflow-y-scroll">
+          <transition name="slide-fade" mode="out-in">
             <component :is="Component" />
-          </div>
-        </transition>
+          </transition>
+        </div>
       </router-view>
     </div>
   </div>
