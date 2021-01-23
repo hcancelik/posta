@@ -4,20 +4,19 @@ module.exports = {
     browser: true,
   },
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module',
+    parser: "babel-eslint",
+    sourceType: "module",
   },
   extends: [
-    'airbnb-base',
-    'plugin:vue/vue3-essential',
-    'prettier/vue',
-    'plugin:prettier/recommended'
+    "airbnb-base",
+    "plugin:vue/vue3-essential",
+    "prettier/vue",
+    "plugin:prettier/recommended",
   ],
   rules: {
-    "comma-dangle": ["error", "always"],
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"],
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
     "import/no-unresolved": "error",
-    "prettier/prettier": ["error", { "htmlWhitespaceSensitivity": "ignore" }],
+    "prettier/prettier": ["error", { htmlWhitespaceSensitivity: "ignore" }],
   },
 };
