@@ -18,4 +18,14 @@ module.exports = {
     semi: ["error", "always"],
     "prettier/prettier": ["error", { htmlWhitespaceSensitivity: "ignore" }],
   },
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [
+          ["@", "./src"],
+        ],
+        extensions: [".js", ".vue"]
+      }
+    }
+  }
 };
