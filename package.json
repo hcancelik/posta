@@ -14,11 +14,15 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9.8.6",
     "core-js": "^3.6.5",
-    "vue": "^3.0.0",
     "electron": "^9.0.0",
-    "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
-    "electron-devtools-installer": "^3.1.0"
+    "electron-devtools-installer": "^3.1.0",
+    "postcss": "^7.0.35",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "vue": "^3.0.0",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
