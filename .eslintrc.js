@@ -16,7 +16,6 @@ module.exports = {
   rules: {
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "import/no-unresolved": "error",
     "prettier/prettier": ["error", { htmlWhitespaceSensitivity: "ignore" }],
   },
 };
