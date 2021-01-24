@@ -3,6 +3,11 @@
   "productName": "Posta",
   "version": "1.0.0",
   "description": "Posta Local Email Testing",
+  "author": {
+    "name": "H.Can Celik",
+    "email": "celik@me.com",
+    "url": "https://github.com/hcancelik"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
