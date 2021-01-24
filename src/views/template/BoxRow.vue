@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-4 py-5 sm:grid sm:grid-cols-4 sm:px-6"
+    class="px-4 py-5 sm:grid sm:grid-cols-3 xl:grid-cols-4 sm:px-6"
     :class="{ 'bg-white': !highlight, 'bg-gray-50': highlight }"
   >
     <dt class="text-sm font-medium text-gray-500 select-none">{{ label }}</dt>

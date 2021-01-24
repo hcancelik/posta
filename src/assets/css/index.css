@@ -48,6 +48,9 @@ input.checkbox:checked:before {
     @apply left-5;
 }
 
+code {
+    @apply block w-full my-4 bg-gray-700 text-gray-200 rounded p-4;
+}
 
 /* Transitions */
 .slide-fade-enter-active {

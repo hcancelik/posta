@@ -49,14 +49,31 @@
       <BoxRow label="Password" :highlight="true">
         <div class="text-gray-400">Set to null or empty string</div>
       </BoxRow>
+
+      <BoxRow label="Framework Settings">
+        <div>
+          <select v-model="framework">
+            <option value="" disabled>
+              Select your framework to view specific settings.
+            </option>
+            <option value="Laravel">Laravel</option>
+            <option value="Node">Nodemailer</option>
+          </select>
+        </div>
+        <transition>
+          <div v-if="framework" class="mt-6">
+            <component :is="framework" />
+          </div>
+        </transition>
+      </BoxRow>
     </Box>
 
     <Box header="App Settings" sub-header="">
       <BoxRow label="Dark Mode">
-        <select class="">
-          <option>System Default</option>
-          <option>Always Light</option>
-          <option>Always Dark</option>
+        <select v-model="darkMode">
+          <option value="default">System Default</option>
+          <option value="light">Always Light</option>
+          <option value="dark">Always Dark</option>
         </select>
       </BoxRow>
     </Box>
@@ -67,19 +84,40 @@
 import PageHeader from "@/views/template/PageHeader";
 import Box from "@/views/template/Box";
 import BoxRow from "@/views/template/BoxRow";
+import Node from "@/views/framework-settings/Node";
+import Laravel from "@/views/framework-settings/Laravel";
 
 export default {
   name: "Settings",
-  components: { BoxRow, Box, PageHeader },
+  components: { BoxRow, Box, PageHeader, Node, Laravel },
   data() {
     return {
       status: true,
       port: "2525",
+      darkMode: "default",
+      framework: "",
     };
+  },
+  watch: {
+    status(newValue) {
+      if (newValue) {
+        this.startServer();
+      } else {
+        this.stopServer();
+      }
+    },
   },
   computed: {
     isRunning() {
       return this.status;
+    },
+  },
+  methods: {
+    startServer() {
+      console.log("starting server");
+    },
+    stopServer() {
+      console.log("stopping server");
     },
   },
 };
