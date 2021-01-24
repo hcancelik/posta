@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+    width: 0;
+}
+
+
 /* Tailwind components */
 .nav-button {
     @apply bg-gray-600 dark:bg-gray-400 bg-opacity-10

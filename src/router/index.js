@@ -9,6 +9,11 @@ const routes = [
     component: Inbox,
   },
   {
+    path: "/:mailbox",
+    name: "mailbox",
+    component: () => import("@/views/Mailbox"),
+  },
+  {
     path: "/settings",
     name: "settings",
     component: Settings,

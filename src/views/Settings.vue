@@ -1,5 +1,5 @@
 <template>
-  <section class="p-6">
+  <div class="flex-1 overflow-y-scroll p-6">
     <PageHeader>Settings</PageHeader>
 
     <Box
@@ -80,7 +80,7 @@
         </select>
       </BoxRow>
     </Box>
-  </section>
+  </div>
 </template>
 
 <script>

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-16 flex flex-col justify-between bg-gray-200 dark:bg-gray-900 shadow pt-3"
-  >
+  <div class="h-full flex flex-col justify-between">
     <div class="flex flex-col items-center justify-center w-full space-y-3">
       <router-link :to="{ name: 'inbox' }">
         <button

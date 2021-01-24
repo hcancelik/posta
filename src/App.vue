@@ -1,13 +1,14 @@
 <template>
   <div class="h-screen flex">
-    <Navigation />
+    <div class="w-16 bg-gray-200 dark:bg-gray-900 shadow pt-3">
+      <Navigation />
+    </div>
+
     <div class="flex-1 flex overflow-hidden">
       <router-view v-slot="{ Component }">
-        <div class="flex-1 overflow-y-scroll">
-          <transition name="slide-fade" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </div>
+        <transition name="slide-fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
       </router-view>
     </div>
   </div>
