@@ -4,7 +4,7 @@
       <slot />
     </h1>
 
-    <hr class="border border-gray-700" />
+    <hr class="border border-gray-200 dark:border-gray-700" />
   </div>
 </template>
 

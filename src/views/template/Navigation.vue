@@ -6,7 +6,7 @@
       <router-link :to="{ name: 'inbox' }">
         <button
           class="nav-button"
-          :class="{ 'text-white': $route.name === 'inbox' }"
+          :class="{ 'nav-button-active': $route.name === 'inbox' }"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@
       <router-link :to="{ name: 'settings' }">
         <button
           class="nav-button"
-          :class="{ 'text-white': $route.name === 'settings' }"
+          :class="{ 'nav-button-active': $route.name === 'settings' }"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

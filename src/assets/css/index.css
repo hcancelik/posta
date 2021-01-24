@@ -4,11 +4,15 @@
 
 /* Tailwind components */
 .nav-button {
-    @apply bg-gray-400 bg-opacity-10
-    text-gray-500 hover:text-white font-bold text-center
+    @apply bg-gray-600 dark:bg-gray-400 bg-opacity-10
+    text-gray-500 hover:text-gray-900 dark:hover:text-white font-bold text-center
     p-2
     rounded shadow
     outline-none focus:outline-none transform;
+}
+
+.nav-button-active {
+    @apply text-gray-900 dark:text-white;
 }
 
 .nav-button:active {
@@ -17,6 +21,24 @@
 
 input {
     @apply px-2 py-2 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-md w-full;
+}
+
+input.checkbox {
+    @apply relative w-12 h-6 mr-3 transition-all duration-200 ease-in-out bg-gray-200 rounded-full shadow-inner outline-none appearance-none;
+
+}
+
+input.checkbox:before {
+    content: '';
+    @apply absolute rounded-full -top-0.5 left-0 bg-gray-50 cursor-pointer shadow-md duration-200 ease-in-out transform scale-100 h-7 w-7 border border-gray-200;
+}
+
+input.checkbox:checked {
+    @apply bg-green-500;
+}
+
+input.checkbox:checked:before {
+    @apply left-5;
 }
 
 
