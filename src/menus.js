@@ -1,4 +1,4 @@
-const { shell } = require("electron");
+const { shell, ipcMain } = require("electron");
 
 const isMac = process.platform === "darwin";
 
@@ -71,6 +71,12 @@ const template = [
     submenu: [
       { role: "minimize" },
       { role: "zoom" },
+      {
+        label: "Reset Window Size",
+        click: async () => {
+          ipcMain.emit("window:reset-size");
+        },
+      },
       ...(isMac
         ? [
             { type: "separator" },

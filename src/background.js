@@ -12,24 +12,50 @@ import settings from "electron-settings";
 import template from "./menus";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
+let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
 
+// Set Menu
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
+// Set Theme
+(async () => {
+  const theme = await settings.get("theme");
+  nativeTheme.themeSource = ["system", "dark", "light"].includes(theme)
+    ? theme
+    : "system";
+
+  ipcMain.handle("theme:change", (event, themeOption) => {
+    nativeTheme.themeSource = themeOption;
+
+    return nativeTheme.themeSource;
+  });
+})();
+
+async function saveWindowBounds() {
+  const bounds = win.getBounds();
+
+  await settings.set("window-size", bounds);
+}
+
 async function createWindow() {
-  const win = new BrowserWindow({
-    width: 1600,
-    height: 1200,
+  const windowBounds = await settings.get("window-size");
+
+  win = new BrowserWindow({
+    title: process.env.APP_TITLE,
+    width: windowBounds ? windowBounds.width : 1600,
+    height: windowBounds ? windowBounds.height : 1200,
+    x: windowBounds.x || null,
+    y: windowBounds.y || null,
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       devTools: isDevelopment,
+      enableRemoteModule: true,
     },
   });
 
@@ -43,15 +69,25 @@ async function createWindow() {
     await win.loadURL("app://./index.html");
   }
 
-  const theme = await settings.get("theme");
-  nativeTheme.themeSource = ["system", "dark", "light"].includes(theme)
-    ? theme
-    : "system";
+  win.on("resize", async () => {
+    await saveWindowBounds();
+  });
 
-  ipcMain.handle("theme:change", (event, themeOption) => {
-    nativeTheme.themeSource = themeOption;
+  win.on("move", async () => {
+    await saveWindowBounds();
+  });
 
-    return nativeTheme.themeSource;
+  win.on("close", async () => {
+    await saveWindowBounds();
+  });
+
+  ipcMain.on("window:reset-size", () => {
+    win.setBounds({
+      width: 1600,
+      height: 1200,
+    });
+
+    win.center();
   });
 }
 
