@@ -1,6 +1,7 @@
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain, nativeTheme } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension from "electron-devtools-installer";
+import settings from "electron-settings";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -29,6 +30,17 @@ async function createWindow() {
 
     await win.loadURL("app://./index.html");
   }
+
+  const theme = await settings.get("theme");
+  nativeTheme.themeSource = ["system", "dark", "light"].includes(theme)
+    ? theme
+    : "system";
+
+  ipcMain.handle("theme:change", (event, themeOption) => {
+    nativeTheme.themeSource = themeOption;
+
+    return nativeTheme.themeSource;
+  });
 }
 
 app.on("activate", () => {

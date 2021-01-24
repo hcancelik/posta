@@ -4,7 +4,7 @@
   <code>
     <pre class="select-all">MAIL_MAILER=smtp
 MAIL_HOST=127.0.0.1
-MAIL_PORT=2525
+MAIL_PORT={{ port }}
 MAIL_USERNAME="Posta Inbox Name"
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null</pre>
@@ -15,7 +15,7 @@ MAIL_ENCRYPTION=null</pre>
   <code>
     <pre class="select-all">MAIL_DRIVER=smtp
 MAIL_HOST=127.0.0.1
-MAIL_PORT=2525
+MAIL_PORT={{ port }}
 MAIL_USERNAME=Inbox-Name
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null</pre>
@@ -25,5 +25,11 @@ MAIL_ENCRYPTION=null</pre>
 <script>
 export default {
   name: "Laravel",
+  props: {
+    port: {
+      type: String,
+      required: true,
+    },
+  },
 };
 </script>

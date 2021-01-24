@@ -20,7 +20,9 @@
 }
 
 input {
-    @apply px-2 py-2 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-md w-full disabled:opacity-50;
+    @apply px-2 py-2 placeholder-gray-400 text-gray-700 dark:text-gray-400 relative
+    bg-white dark:bg-gray-600 rounded text-sm shadow outline-none
+    focus:outline-none focus:shadow-md w-full disabled:opacity-40;
 }
 
 select {
@@ -28,16 +30,16 @@ select {
     background-position: right .5rem center;
     background-size: 1.5em 1.5em;
     -webkit-print-color-adjust: exact;
-    @apply block w-full py-2 px-3 border border-gray-200 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm appearance-none pr-9 bg-no-repeat;
+    @apply block w-full py-2 px-3 border border-gray-200 bg-white dark:bg-gray-600 dark:border-gray-800 rounded-md shadow-sm focus:outline-none sm:text-sm appearance-none pr-9 bg-no-repeat;
 }
 
 input.checkbox {
-    @apply relative w-12 h-6 mr-3 transition-all duration-200 ease-in-out bg-gray-200 rounded-full shadow-inner outline-none appearance-none;
+    @apply relative w-12 h-6 mr-3 transition-all duration-200 ease-in-out bg-gray-200 dark:bg-gray-500 rounded-full shadow-inner outline-none appearance-none;
 }
 
 input.checkbox:before {
     content: '';
-    @apply absolute rounded-full -top-0.5 left-0 bg-gray-50 cursor-pointer shadow-md duration-200 ease-in-out transform scale-100 h-7 w-7 border border-gray-200;
+    @apply absolute rounded-full -top-0.5 left-0 bg-gray-50 dark:bg-gray-400 cursor-pointer shadow-md duration-200 ease-in-out transform scale-100 h-7 w-7 border border-gray-200 dark:border-gray-500;
 }
 
 input.checkbox:checked {
@@ -49,7 +51,7 @@ input.checkbox:checked:before {
 }
 
 code {
-    @apply block w-full my-4 bg-gray-700 text-gray-200 rounded p-4;
+    @apply block w-full my-4 bg-gray-700 dark:bg-gray-800 text-gray-200 dark:text-gray-300 rounded p-4;
 }
 
 /* Transitions */

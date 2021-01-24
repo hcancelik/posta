@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "electron": "^9.0.0",
     "electron-devtools-installer": "^3.1.0",
+    "electron-settings": "^4.0.2",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",

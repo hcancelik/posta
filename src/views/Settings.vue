@@ -13,13 +13,16 @@
           :disabled="isRunning"
           placeholder="2525"
           class="text-input"
+          @change="updateSetting('port', port)"
         />
       </BoxRow>
       <BoxRow label="Status" :highlight="true">
         <div class="flex items-center">
           <input class="checkbox" type="checkbox" v-model="status" />
-          <span class="text-green-700" v-if="status">Running</span>
-          <span class="text-red-600" v-else>Stopped</span>
+          <span class="text-green-700 font-semibold" v-if="status">
+            Running...
+          </span>
+          <span class="text-red-700 font-semibold" v-else>Stopped</span>
         </div>
       </BoxRow>
     </Box>
@@ -31,10 +34,10 @@
       <BoxRow label="SMTP Host">
         127.0.0.1
         <br />
-        <span class="font-semibold text-gray-500">For Vagrant/Homestead:</span>
+        <span class="font-semibold text-gray-500">Vagrant/Homestead:</span>
         10.0.2.2
         <br />
-        <span class="font-semibold text-gray-500">For Docker:</span>
+        <span class="font-semibold text-gray-500">Docker:</span>
         host.docker.internal
       </BoxRow>
 
@@ -62,16 +65,16 @@
         </div>
         <transition>
           <div v-if="framework" class="mt-6">
-            <component :is="framework" />
+            <component :is="framework" :port="port" />
           </div>
         </transition>
       </BoxRow>
     </Box>
 
     <Box header="App Settings" sub-header="">
-      <BoxRow label="Dark Mode">
-        <select v-model="darkMode">
-          <option value="default">System Default</option>
+      <BoxRow label="Theme">
+        <select v-model="theme" @change="changeTheme">
+          <option value="system">System Default</option>
           <option value="light">Always Light</option>
           <option value="dark">Always Dark</option>
         </select>
@@ -81,11 +84,13 @@
 </template>
 
 <script>
+import settings from "electron-settings";
 import PageHeader from "@/views/template/PageHeader";
 import Box from "@/views/template/Box";
 import BoxRow from "@/views/template/BoxRow";
 import Node from "@/views/framework-settings/Node";
 import Laravel from "@/views/framework-settings/Laravel";
+import { ipcRenderer } from "electron";
 
 export default {
   name: "Settings",
@@ -94,7 +99,7 @@ export default {
     return {
       status: true,
       port: "2525",
-      darkMode: "default",
+      theme: "system",
       framework: "",
     };
   },
@@ -112,12 +117,24 @@ export default {
       return this.status;
     },
   },
+  async created() {
+    this.theme = (await settings.get("theme")) || "system";
+    this.port = (await settings.get("port")) || "2525";
+  },
   methods: {
     startServer() {
       console.log("starting server");
     },
     stopServer() {
       console.log("stopping server");
+    },
+    async updateSetting(setting, value) {
+      await settings.set(setting, value);
+    },
+    async changeTheme() {
+      await ipcRenderer.invoke("theme:change", this.theme);
+
+      await this.updateSetting("theme", this.theme);
     },
   },
 };
