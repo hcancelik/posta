@@ -1,7 +1,15 @@
-import { app, protocol, BrowserWindow, ipcMain, nativeTheme } from "electron";
+import {
+  app,
+  protocol,
+  BrowserWindow,
+  ipcMain,
+  nativeTheme,
+  Menu,
+} from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension from "electron-devtools-installer";
 import settings from "electron-settings";
+import template from "./menus";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -9,6 +17,9 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
+
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
 async function createWindow() {
   const win = new BrowserWindow({
@@ -18,6 +29,7 @@ async function createWindow() {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      devTools: isDevelopment,
     },
   });
 
