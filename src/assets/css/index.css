@@ -20,12 +20,19 @@
 }
 
 input {
-    @apply px-2 py-2 placeholder-gray-400 text-gray-700 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-md w-full;
+    @apply px-2 py-2 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-md w-full disabled:opacity-50;
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right .5rem center;
+    background-size: 1.5em 1.5em;
+    -webkit-print-color-adjust: exact;
+    @apply block w-full py-2 px-3 border border-gray-200 bg-white rounded-md shadow-sm focus:outline-none sm:text-sm appearance-none pr-9 bg-no-repeat;
 }
 
 input.checkbox {
     @apply relative w-12 h-6 mr-3 transition-all duration-200 ease-in-out bg-gray-200 rounded-full shadow-inner outline-none appearance-none;
-
 }
 
 input.checkbox:before {

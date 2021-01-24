@@ -2,9 +2,18 @@
   <section class="p-6">
     <PageHeader>Settings</PageHeader>
 
-    <Box header="Server Settings" sub-header="Set the basic server settings.">
+    <Box
+      header="SMTP Server"
+      sub-header="Here is your basic smtp server settings."
+    >
       <BoxRow label="Port">
-        <input type="text" v-model="port" placeholder="2525" class="input" />
+        <input
+          type="text"
+          v-model="port"
+          :disabled="isRunning"
+          placeholder="2525"
+          class="text-input"
+        />
       </BoxRow>
       <BoxRow label="Status" :highlight="true">
         <div class="flex items-center">
@@ -16,7 +25,7 @@
     </Box>
 
     <Box
-      header="Connection Settings"
+      header="Connection"
       sub-header="Use the following settings in your app to send email to Posta."
     >
       <BoxRow label="SMTP Host">
@@ -41,6 +50,16 @@
         <div class="text-gray-400">Set to null or empty string</div>
       </BoxRow>
     </Box>
+
+    <Box header="App Settings" sub-header="">
+      <BoxRow label="Dark Mode">
+        <select class="">
+          <option>System Default</option>
+          <option>Always Light</option>
+          <option>Always Dark</option>
+        </select>
+      </BoxRow>
+    </Box>
   </section>
 </template>
 
@@ -57,6 +76,11 @@ export default {
       status: true,
       port: "2525",
     };
+  },
+  computed: {
+    isRunning() {
+      return this.status;
+    },
   },
 };
 </script>
