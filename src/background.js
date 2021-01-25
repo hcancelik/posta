@@ -50,8 +50,8 @@ async function createWindow() {
     title: process.env.APP_TITLE,
     width: windowBounds ? windowBounds.width : 1600,
     height: windowBounds ? windowBounds.height : 1200,
-    x: windowBounds.x || null,
-    y: windowBounds.y || null,
+    x: windowBounds ? windowBounds.x : null,
+    y: windowBounds ? windowBounds.y : null,
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       devTools: isDevelopment,
@@ -91,10 +91,10 @@ async function createWindow() {
   });
 }
 
-app.on("activate", () => {
+app.on("activate", async () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) await createWindow();
 });
 
 // This method will be called when Electron has finished
