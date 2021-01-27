@@ -6,7 +6,7 @@
     port: {{ port }},
     auth: {
       user: "Mailbox-Name",
-      pass: ""
+      pass: " "
     }
   });</pre>
   </code>

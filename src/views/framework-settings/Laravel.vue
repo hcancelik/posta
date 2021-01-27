@@ -6,7 +6,7 @@
 MAIL_HOST=127.0.0.1
 MAIL_PORT={{ port }}
 MAIL_USERNAME="Posta Inbox Name"
-MAIL_PASSWORD=null
+MAIL_PASSWORD=" "
 MAIL_ENCRYPTION=null</pre>
   </code>
 
@@ -16,8 +16,8 @@ MAIL_ENCRYPTION=null</pre>
     <pre class="select-all">MAIL_DRIVER=smtp
 MAIL_HOST=127.0.0.1
 MAIL_PORT={{ port }}
-MAIL_USERNAME=Inbox-Name
-MAIL_PASSWORD=null
+MAIL_USERNAME="Posta Inbox Name"
+MAIL_PASSWORD=" "
 MAIL_ENCRYPTION=null</pre>
   </code>
 </template>
