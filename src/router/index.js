@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import Inbox from "../views/Inbox.vue";
+import Index from "../views/Index.vue";
 import Settings from "../views/Settings.vue";
 
 const routes = [
   {
     path: "/",
-    name: "inbox",
-    component: Inbox,
+    name: "index",
+    component: Index,
   },
   {
     path: "/:mailbox",

@@ -1,10 +1,12 @@
 <template>
   <div class="h-full flex flex-col justify-between">
     <div class="flex flex-col items-center justify-center w-full space-y-3">
-      <router-link :to="{ name: 'inbox' }">
+      <router-link :to="{ name: 'index' }">
         <button
           class="nav-button"
-          :class="{ 'nav-button-active': $route.name === 'inbox' }"
+          :class="{
+            'nav-button-active': ['index', 'mailbox'].includes($route.name),
+          }"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
