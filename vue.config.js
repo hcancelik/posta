@@ -8,7 +8,7 @@ module.exports = {
     config.plugin("html").tap((args) => {
       const argList = [...args];
 
-      argList[0].title = process.env.APP_TITLE;
+      argList[0].title = process.env.VUE_APP_TITLE;
 
       return argList;
     });

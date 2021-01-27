@@ -47,7 +47,7 @@ async function createWindow() {
   const windowBounds = await settings.get("window-size");
 
   win = new BrowserWindow({
-    title: process.env.APP_TITLE,
+    title: process.env.VUE_APP_TITLE,
     width: windowBounds ? windowBounds.width : 1600,
     height: windowBounds ? windowBounds.height : 1200,
     x: windowBounds ? windowBounds.x : null,

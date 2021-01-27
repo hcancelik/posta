@@ -7,7 +7,7 @@ const template = [
   ...(isMac
     ? [
         {
-          label: process.env.APP_NAME,
+          label: process.env.VUE_APP_NAME,
           submenu: [
             { role: "about" },
             { type: "separator" },
