@@ -6,7 +6,7 @@
 
     <div class="flex-1 flex overflow-hidden">
       <router-view v-slot="{ Component }">
-        <transition name="slide-fade" mode="out-in">
+        <transition :name="transitionName" mode="out-in" appear>
           <component :is="Component" />
         </transition>
       </router-view>
@@ -15,10 +15,25 @@
 </template>
 
 <script>
+import transitions from "@/router/transitions";
 import Navigation from "./views/template/Navigation.vue";
 
 export default {
   name: "App",
   components: { Navigation },
+  data() {
+    return {
+      transitionName: "",
+    };
+  },
+  watch: {
+    $route(to, from) {
+      const transition = transitions.find(
+        (t) => t.to === to.name && t.from === from.name
+      );
+
+      this.transitionName = transition ? transition.class : "";
+    },
+  },
 };
 </script>

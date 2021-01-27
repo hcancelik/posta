@@ -1,3 +1,5 @@
+@import "transitions.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,7 +23,7 @@
 }
 
 .nav-button:active {
-    @apply translate-y-0.5 duration-150;
+    @apply translate-y-0.5;
 }
 
 input {
@@ -57,19 +59,4 @@ input.checkbox:checked:before {
 
 code {
     @apply block w-full my-4 bg-gray-700 dark:bg-gray-800 text-gray-200 dark:text-gray-300 rounded p-4;
-}
-
-/* Transitions */
-.slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
 }
