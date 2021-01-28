@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 #Electron-builder output
 /dist_electron
+
+/db/dev.sqlite3
+/db/test.sqlite3
