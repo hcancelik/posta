@@ -9,10 +9,13 @@ import {
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension from "electron-devtools-installer";
 import settings from "electron-settings";
+import knex from "knex";
 import template from "./menus";
+import knexfile from "../knexfile";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 let win;
+let db;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -37,11 +40,20 @@ Menu.setApplicationMenu(menu);
   });
 })();
 
+// Save Window Bounds
 async function saveWindowBounds() {
   const bounds = win.getBounds();
 
   await settings.set("window-size", bounds);
 }
+
+// Setup Database
+(async () => {
+  const dbConfig = knexfile[process.env.NODE_ENV];
+  db = knex(dbConfig);
+
+  await db.migrate.latest();
+})();
 
 async function createWindow() {
   const windowBounds = await settings.get("window-size");

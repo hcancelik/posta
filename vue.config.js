@@ -2,6 +2,7 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
+      externals: ["knex", "sqlite3"],
     },
   },
   chainWebpack: (config) => {

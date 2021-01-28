@@ -15,17 +15,20 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "knex:reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },
   "main": "background.js",
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.6.5",
-    "electron": "^9.0.0",
+    "electron": "^11.0.0",
     "electron-devtools-installer": "^3.1.0",
     "electron-settings": "^4.0.2",
+    "knex": "^0.21.16",
     "postcss": "^7.0.35",
+    "sqlite3": "^5.0.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
@@ -45,6 +48,8 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.5.0",
+    "faker": "^5.2.0",
+    "nodemailer": "^6.4.17",
     "prettier": "^2.2.1"
   },
   "eslintConfig": {
