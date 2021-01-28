@@ -17,6 +17,11 @@ module.exports = {
     quotes: ["error", "double"],
     semi: ["error", "always"],
     "prettier/prettier": ["error", { htmlWhitespaceSensitivity: "ignore" }],
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": true
+      }
+    ]
   },
   settings: {
     "import/resolver": {
