@@ -33,5 +33,10 @@
 <script>
 export default {
   name: "NoMailbox",
+  data() {
+    return {
+      appName: process.env.VUE_APP_NAME,
+    };
+  },
 };
 </script>
