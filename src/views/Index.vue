@@ -4,6 +4,11 @@
 
     <template v-slot:sidebar>
       <ul class="list-none">
+        <template v-if="isLoading">
+          <li class="p-1">
+            <Loading>Loading mailboxes...</Loading>
+          </li>
+        </template>
         <template v-for="mailbox in mailboxes" :key="mailbox.id">
           <router-link
             :to="{ name: 'mailbox', params: { mailbox: mailbox.id } }"
@@ -20,7 +25,7 @@
                 <div
                   class="rounded-full bg-blue-400 text-center text-sm items-center justify-center text-white"
                 >
-                  {{ mailbox.emailCount > 100 ? "100+" : mailbox.emailCount }}
+                  {{ mailbox.emails > 100 ? "100+" : mailbox.emails }}
                 </div>
               </div>
               <div class="w-1/12 justify-end text-gray-300 text-sm">
@@ -60,51 +65,61 @@
 import Inbox from "@/views/template/Inbox";
 import { remote } from "electron";
 import NoMailbox from "@/views/components/NoMailbox";
+import dbMixin from "@/mixins/dbMixin";
+import Loading from "@/views/components/Loading";
 
 export default {
   name: "Index",
-  components: { NoMailbox, Inbox },
+  components: { Loading, NoMailbox, Inbox },
+  mixins: [dbMixin],
   data() {
     return {
-      appName: process.env.VUE_APP_NAME,
+      isLoading: true,
       selectedMailbox: null,
-      mailboxes: [
-        {
-          id: "1",
-          name: "Test Mailbox 1",
-          emailCount: 25,
-        },
-        {
-          id: "2",
-          name: "Test Mailbox 2",
-          emailCount: 0,
-        },
-        {
-          id: "3",
-          name: "Test Mailbox 3",
-          emailCount: 125,
-        },
-      ],
+      mailboxes: [],
       mailboxContextMenu: null,
       selectedMailboxIdForContextMenu: null,
     };
   },
-  created() {
-    const menu = new remote.Menu();
-    const that = this;
+  async created() {
+    this.setupMenu();
 
-    menu.append(
-      new remote.MenuItem({
-        label: "Delete Mailbox",
-        async click() {
-          await that.deleteMailbox();
-        },
-      })
-    );
-
-    this.mailboxContextMenu = menu;
+    await this.fetchEmails();
   },
   methods: {
+    async fetchEmails() {
+      this.isLoading = true;
+
+      this.db("mailboxes")
+        .join("emails", "mailboxes.id", "=", "emails.mailbox_id")
+        .select(
+          "mailboxes.id",
+          "mailboxes.name",
+          this.db.raw("count(emails.id) as emails")
+        )
+        .groupBy("mailboxes.id", "mailboxes.name")
+        .then((rows) => {
+          this.mailboxes = rows;
+        })
+        .finally(() => {
+          this.isLoading = true;
+        });
+    },
+    setupMenu() {
+      const menu = new remote.Menu();
+      const that = this;
+
+      menu.append(
+        new remote.MenuItem({
+          label: "Delete Mailbox",
+          async click() {
+            await that.deleteMailbox();
+          },
+        })
+      );
+
+      this.mailboxContextMenu = menu;
+    },
     openContextMail(mailboxId) {
       this.selectedMailboxIdForContextMenu = mailboxId;
 

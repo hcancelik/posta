@@ -5,12 +5,12 @@
         <div class="truncate">{{ mailbox.name }}</div>
         <router-link :to="{ name: 'index' }">
           <div
-            class="cursor-pointer rounded p-1 bg-gray-100 dark:bg-gray-700 text-gray-300 hover:bg-gray-200 hover:text-gray-400 dark:hover:bg-gray-600 items-center text-center transform active:translate-y-0.5"
+            class="cursor-pointer rounded p-1 bg-gray-100 dark:bg-gray-700 text-gray-300 hover:bg-gray-200 hover:text-gray-400 dark:hover:bg-gray-600 items-center text-center transform active:translate-y-0.5 shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -55,64 +55,25 @@
 </template>
 <script>
 import Inbox from "@/views/template/Inbox";
+import dbMixin from "@/mixins/dbMixin";
 
 export default {
   name: "Mailbox",
   components: { Inbox },
+  mixins: [dbMixin],
   data() {
     return {
       selectedEmail: null,
-      mailbox: {
-        id: "1",
-        name: "Test Mailbox 1",
-        emails: [
-          {
-            id: 1,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test",
-            html: "Message",
-          },
-          {
-            id: 2,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test 2",
-            html: "Message",
-          },
-          {
-            id: 3,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test 3",
-            html: "Message",
-          },
-          {
-            id: 4,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test 4",
-            html: "Message",
-          },
-          {
-            id: 5,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test 5",
-            html: "Message",
-          },
-          {
-            id: 6,
-            from: "test@test.com",
-            to: "something@something.com",
-            subject: "Test 6",
-            html: "Message",
-          },
-        ],
-      },
+      mailbox: null,
     };
   },
+  async created() {
+    await this.loadMailbox();
+  },
   methods: {
+    async loadMailbox() {
+      // log mailbox
+    },
     showEmail(email) {
       this.selectedEmail = null;
       this.$nextTick(() => {
