@@ -7,20 +7,7 @@
           :to="{ name: 'index' }"
           class="cursor-pointer rounded p-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-gray-300 items-center text-center transform active:translate-y-0.5 shadow"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-chevron-left"
-          >
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
+          <chevron-left-icon />
         </router-link>
       </div>
     </template>
@@ -38,7 +25,7 @@
           v-else
           v-for="email in emails"
           :key="email.id"
-          class="w-full px-4 py-4 list-item flex flex-col items-start"
+          class="w-full px-4 py-4 list-item flex flex-row flex-no-wrap"
           :class="{
             'selected-email': selectedEmail && selectedEmail.id === email.id,
             'font-extrabold': !email.read,
@@ -46,9 +33,22 @@
           @click="showEmail(email)"
           @contextmenu="openContextMail(email)"
         >
-          <div class="w-full truncate">{{ email.subject }}</div>
-          <div class="w-full truncate text-xs text-gray-400 dark:text-gray-500">
-            {{ email.from }}
+          <div class="flex items-center w-1/12" v-if="!email.read">
+            <div class="block bg-blue-500 rounded-full w-2 h-2"></div>
+          </div>
+          <div
+            class="flex flex-col items-start"
+            :class="{ 'w-11/12': !email.read, 'w-full': email.read }"
+          >
+            <div class="w-full truncate">{{ email.subject }}</div>
+            <div
+              class="mt-1 w-full truncate text-xs text-gray-400 dark:text-gray-500 flex justify-between items-center"
+            >
+              <div class="w-2/3 truncate">{{ email.from }}</div>
+              <div class="text-right">
+                {{ formatDate(email.created_at) }}
+              </div>
+            </div>
           </div>
         </li>
       </ul>
@@ -74,10 +74,11 @@ import dbMixin from "@/mixins/dbMixin";
 import { remote } from "electron";
 import Loading from "@/views/components/Loading";
 import Email from "@/views/Email";
+import ChevronLeftIcon from "@/views/components/icons/ChevronLeftIcon";
 
 export default {
   name: "Mailbox",
-  components: { Email, Loading, Inbox },
+  components: { ChevronLeftIcon, Email, Loading, Inbox },
   props: ["mailboxId"],
   mixins: [dbMixin],
   data() {
@@ -98,6 +99,12 @@ export default {
     this.setupMenu();
   },
   methods: {
+    formatDate(date) {
+      return new Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(new Date(date));
+    },
     loadMailbox() {
       this.db("mailboxes")
         .select("id", "name")
@@ -109,8 +116,8 @@ export default {
     async loadEmails(selectFirst = false) {
       this.loading = true;
 
-      this.db("emails")
-        .select()
+      await this.db("emails")
+        .select("*")
         .where("mailbox_id", this.mailboxId)
         .orderBy("created_at", "desc")
         .then((rows) => {
