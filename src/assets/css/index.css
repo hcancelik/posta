@@ -70,5 +70,5 @@ code {
 }
 
 .list-item {
-    @apply flex text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transform active:translate-y-0.5 border-b border-gray-100 dark:border-gray-700;
+    @apply flex text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transform active:translate-y-0.5 border-t border-gray-100 dark:border-gray-700 active:shadow-inner;
 }

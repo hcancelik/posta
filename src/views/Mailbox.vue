@@ -26,7 +26,9 @@
     </template>
 
     <template v-slot:sidebar>
-      <ul class="list-none">
+      <ul
+        class="list-none first:border-t-0 border-b border-gray-100 dark:border-gray-700"
+      >
         <template v-if="loading">
           <li class="p-2">
             <Loading>Loading emails</Loading>
@@ -45,7 +47,7 @@
           @contextmenu="openContextMail(email)"
         >
           <div class="w-full truncate">{{ email.subject }}</div>
-          <div class="w-full truncate text-sm text-gray-400 dark:text-gray-500">
+          <div class="w-full truncate text-xs text-gray-400 dark:text-gray-500">
             {{ email.from }}
           </div>
         </li>
@@ -173,6 +175,10 @@ export default {
           );
 
           this.$toast.success("Email is deleted.");
+
+          this.checkRemainingEmails(
+            this.selectedEmailForContextMenu.mailbox_id
+          );
         })
         .catch((error) => {
           this.$toast.error(error.message);
@@ -181,12 +187,29 @@ export default {
           this.selectedEmailForContextMenu = null;
         });
     },
+    checkRemainingEmails(mailboxId) {
+      this.db("emails")
+        .where("mailbox_id", mailboxId)
+        .then((rows) => {
+          if (rows.length === 0) {
+            this.deleteMailbox(mailboxId);
+          }
+        });
+    },
+    deleteMailbox(mailboxId) {
+      this.db("mailboxes")
+        .where("id", mailboxId)
+        .del()
+        .then(() => {
+          this.$router.push({ name: "index" });
+        });
+    },
   },
 };
 </script>
 
 <style scoped>
 .selected-email {
-  @apply bg-gray-100 hover:bg-gray-100 border-l-4 border-blue-600 border-b-0 dark:bg-gray-700 dark:hover:bg-gray-700 !important;
+  @apply bg-gray-100 hover:bg-gray-100 border-l-4 border-blue-600 border-t-0 dark:bg-gray-700 dark:hover:bg-gray-700 shadow-inner !important;
 }
 </style>

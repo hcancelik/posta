@@ -3,9 +3,11 @@
     <template v-slot:header>Mailboxes</template>
 
     <template v-slot:sidebar>
-      <ul class="list-none">
+      <ul
+        class="list-none border-b first:border-t-0 border-gray-100 dark:border-gray-700"
+      >
         <template v-if="isLoading">
-          <li class="p-1">
+          <li class="p-1 first:border-t-0">
             <Loading>Loading mailboxes...</Loading>
           </li>
         </template>
@@ -15,7 +17,6 @@
           :key="mailbox.id"
         >
           <router-link
-            v-if="mailbox.emails > 0"
             :to="{ name: 'mailbox', params: { mailboxId: mailbox.id } }"
             @contextmenu="openContextMail(mailbox)"
             :id="mailbox.id"
@@ -26,7 +27,7 @@
               </div>
               <div class="w-11 justify-end">
                 <div
-                  class="p-1 rounded-full shadow-sm bg-blue-400 text-center text-xs items-center justify-center text-white"
+                  class="p-1 rounded-full shadow-sm bg-green-500 dark:bg-green-600 text-center text-xs items-center justify-center text-white"
                 >
                   {{ mailbox.emails > 100 ? "100+" : mailbox.emails }}
                 </div>
@@ -97,11 +98,13 @@ export default {
       this.isLoading = true;
 
       this.db("mailboxes")
-        .join("emails", "mailboxes.id", "=", "emails.mailbox_id")
+        .joinRaw(
+          "left join emails on mailboxes.id = emails.mailbox_id and emails.read is not true"
+        )
         .select(
-          "mailboxes.id",
-          "mailboxes.name",
-          this.db.raw("count(emails.id) as emails")
+          this.db.raw(
+            "mailboxes.id, mailboxes.name, count(emails.id) as emails"
+          )
         )
         .groupBy("mailboxes.id", "mailboxes.name")
         .then((rows) => {

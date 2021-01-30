@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-400 shadow rounded-md mb-12"
+    class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-400 shadow rounded-md mb-12"
   >
     <div class="px-4 py-5 sm:px-6 select-none">
       <h3 class="text-lg leading-6 font-medium">{{ header }}</h3>
@@ -30,5 +30,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

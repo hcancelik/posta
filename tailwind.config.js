@@ -18,6 +18,8 @@ module.exports = {
       opacity: ["disabled"],
       translate: ["active"],
       outline: ["active"],
+      boxShadow: ["active"],
+      borderWidth: ["first"],
     },
   },
   plugins: [],

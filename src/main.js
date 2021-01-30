@@ -9,7 +9,7 @@ const app = createApp(App);
 
 app.use(router);
 app.use(Toaster, {
-  position: "top-right",
+  position: "bottom-right",
   dismissible: true,
 });
 app.mount("#app");
