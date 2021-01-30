@@ -8,6 +8,14 @@
     width: 0;
 }
 
+* {
+    @apply outline-none focus:outline-none active:outline-none;
+}
+
+.c-toast {
+    font-family: inherit !important;
+    @apply rounded select-none shadow-lg !important;
+}
 
 /* Tailwind components */
 .nav-button {
@@ -59,4 +67,8 @@ input.checkbox:checked:before {
 
 code {
     @apply block w-full my-4 bg-gray-700 dark:bg-gray-800 text-gray-200 dark:text-gray-300 rounded p-4;
+}
+
+.list-item {
+    @apply flex text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transform active:translate-y-0.5 border-b border-gray-100 dark:border-gray-700;
 }

@@ -17,8 +17,10 @@ exports.seed = (knex) => {
           cc: faker.internet.email(),
           bcc: faker.internet.email(),
           reply_to: faker.internet.email(),
+          subject: faker.lorem.sentence(),
           html: faker.lorem.paragraphs(10),
           text: faker.lorem.paragraphs(3),
+          read: false,
         });
       }
 

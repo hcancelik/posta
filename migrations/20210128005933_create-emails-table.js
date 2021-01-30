@@ -15,8 +15,10 @@ exports.up = (knex) => {
     table.string("cc").nullable();
     table.string("bcc").nullable();
     table.string("reply_to").nullable();
+    table.string("subject").nullable();
     table.text("html").nullable();
     table.text("text").nullable();
+    table.boolean("read").defaultTo(false);
     table.timestamp("created_at").defaultTo(knex.fn.now()).index();
   });
 };

@@ -7,12 +7,17 @@ module.exports = {
   ],
   darkMode: "media", // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        88: "22rem",
+      },
+    },
   },
   variants: {
     extend: {
       opacity: ["disabled"],
       translate: ["active"],
+      outline: ["active"],
     },
   },
   plugins: [],

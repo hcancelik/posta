@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-row w-full">
     <div
-      class="flex w-80 h-screen bg-gray-50 dark:bg-gray-800 border-r border-gray-100 dark:border-gray-700 shadow-sm select-none mb-3"
+      class="flex w-88 h-screen bg-gray-50 dark:bg-gray-800 select-none mb-3"
     >
-      <div class="w-80 h-screen overflow-y-scroll">
-        <div class="fixed bg-gray-50 w-80 dark:bg-gray-800">
+      <div class="w-88 h-screen overflow-y-scroll">
+        <div class="fixed bg-gray-50 w-88 dark:bg-gray-800 z-50">
           <h2
-            class="text-black dark:text-gray-200 font-bold text-3xl border-r border-gray-100 dark:border-gray-700 p-3"
+            class="text-black dark:text-gray-200 font-bold text-2xl py-4 px-3.5"
           >
             <slot name="header"></slot>
           </h2>
@@ -19,9 +19,7 @@
       </div>
     </div>
 
-    <div
-      class="bg-gray-100 dark:bg-gray-700 w-full overflow-y-scroll p-8 h-screen"
-    >
+    <div class="bg-gray-200 dark:bg-gray-700 w-full overflow-y-scroll h-screen">
       <slot />
     </div>
   </div>
