@@ -18,8 +18,11 @@ exports.up = (knex) => {
     table.string("subject").nullable();
     table.text("html").nullable();
     table.text("text").nullable();
-    table.boolean("read").defaultTo(false);
-    table.timestamp("created_at").defaultTo(knex.fn.now()).index();
+    table.string("message_id").nullable();
+    table.json("headers").nullable();
+    table.text("raw").nullable();
+    table.boolean("read");
+    table.timestamp("created_at", { useTz: true }).index();
   });
 };
 

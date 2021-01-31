@@ -10,12 +10,16 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension from "electron-devtools-installer";
 import settings from "electron-settings";
 import knex from "knex";
+import { SMTPServer } from "smtp-server";
+import { simpleParser } from "mailparser";
 import template from "./menus";
 import knexfile from "../knexfile";
+import emailHelper from "./helpers/email";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 let win;
 let db;
+let server;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -54,6 +58,49 @@ async function saveWindowBounds() {
 
   await db.migrate.latest();
 })();
+
+// Setup SMTP Server
+(async () => {
+  server = new SMTPServer({
+    secure: false,
+    size: 1024 * 1024,
+    disableReverseLookup: true,
+    hideSTARTTLS: true,
+    onAuth(auth, session, callback) {
+      callback(null, { user: auth.username });
+    },
+    onData(stream, session, callback) {
+      const mailboxName = session.user;
+      let raw = "";
+
+      stream
+        .on("data", (data) => {
+          raw += data;
+        })
+        .on("end", () => {
+          simpleParser(raw).then(async (emailData) => {
+            await emailHelper.saveEmail(mailboxName, emailData, raw);
+          });
+
+          callback(null);
+        });
+    },
+  });
+})();
+
+async function startSmtpServer() {
+  const port = (await settings.get("port")) || "2525";
+
+  server.listen(port, "127.0.0.1", async () => {
+    await settings.set("server-running", true);
+  });
+}
+
+async function stopSmtpServer() {
+  server.close(async () => {
+    await settings.set("server-running", false);
+  });
+}
 
 async function createWindow() {
   const windowBounds = await settings.get("window-size");
@@ -100,6 +147,16 @@ async function createWindow() {
     });
 
     win.center();
+  });
+
+  await startSmtpServer();
+
+  ipcMain.handle("server:start", async () => {
+    await startSmtpServer();
+  });
+
+  ipcMain.handle("server:stop", async () => {
+    await stopSmtpServer();
   });
 }
 

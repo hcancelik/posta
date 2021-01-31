@@ -9,7 +9,8 @@ exports.seed = (knex) => {
       // eslint-disable-next-line no-plusplus
       for (let i = 1; i <= 5; i++) {
         emails.push({
-          name: `Text Mailbox ${i}`,
+          name: `Test Mailbox ${i}`,
+          created_at: new Date().toISOString(),
         });
       }
 

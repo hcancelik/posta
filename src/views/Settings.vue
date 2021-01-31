@@ -18,7 +18,12 @@
       </BoxRow>
       <BoxRow label="Status" :highlight="true">
         <div class="flex items-center">
-          <input class="checkbox" type="checkbox" v-model="status" />
+          <input
+            class="checkbox"
+            type="checkbox"
+            v-model="status"
+            @change="changeServerStatus"
+          />
           <span class="text-green-700 font-semibold" v-if="status">
             Running...
           </span>
@@ -97,20 +102,11 @@ export default {
   components: { BoxRow, Box, PageHeader, Node, Laravel },
   data() {
     return {
-      status: true,
+      status: false,
       port: "2525",
       theme: "system",
       framework: "",
     };
-  },
-  watch: {
-    status(newValue) {
-      if (newValue) {
-        this.startServer();
-      } else {
-        this.stopServer();
-      }
-    },
   },
   computed: {
     isRunning() {
@@ -120,13 +116,25 @@ export default {
   async created() {
     this.theme = (await settings.get("theme")) || "system";
     this.port = (await settings.get("port")) || "2525";
+    this.status = await settings.get("server-running");
   },
   methods: {
-    startServer() {
-      console.log("starting server");
+    async changeServerStatus() {
+      if (this.status) {
+        await this.startServer();
+      } else {
+        await this.stopServer();
+      }
     },
-    stopServer() {
-      console.log("stopping server");
+    async startServer() {
+      await ipcRenderer.invoke("server:start").then(() => {
+        this.$toast.success("Server is successfully started.");
+      });
+    },
+    async stopServer() {
+      await ipcRenderer.invoke("server:stop").then(() => {
+        this.$toast.warning("Server is stopped.");
+      });
     },
     async updateSetting(setting, value) {
       await settings.set(setting, value);

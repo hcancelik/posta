@@ -20,7 +20,11 @@ exports.seed = (knex) => {
           subject: faker.lorem.sentence(),
           html: faker.lorem.paragraphs(10),
           text: faker.lorem.paragraphs(3),
+          message_id: faker.random.uuid(),
+          headers: JSON.stringify({ foo: "bar" }),
+          raw: faker.lorem.paragraphs(5),
           read: false,
+          created_at: new Date().toISOString(),
         });
       }
 
