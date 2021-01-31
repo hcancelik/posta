@@ -18,6 +18,8 @@
 import transitions from "@/router/transitions";
 import Navigation from "./views/template/Navigation.vue";
 
+const { ipcRenderer } = require("electron");
+
 export default {
   name: "App",
   components: { Navigation },
@@ -34,6 +36,13 @@ export default {
 
       this.transitionName = transition ? transition.class : "";
     },
+  },
+  mounted() {
+    ipcRenderer.on("refresh-mailboxes", async () => {
+      console.log("New email");
+
+      this.emitter.emit("fetch-data");
+    });
   },
 };
 </script>

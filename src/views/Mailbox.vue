@@ -91,12 +91,16 @@ export default {
       selectedEmailForContextMenu: null,
     };
   },
-  async created() {
-    this.loadMailbox();
-
-    await this.loadEmails(true);
+  async mounted() {
+    await this.fetchData();
 
     this.setupMenu();
+
+    if (this.emails.length > 0) {
+      this.showEmail(this.emails[0]);
+    }
+
+    this.emitter.on("fetch-data", () => this.fetchData());
   },
   methods: {
     formatDate(date) {
@@ -104,6 +108,12 @@ export default {
         dateStyle: "short",
         timeStyle: "short",
       }).format(new Date(date));
+    },
+    async fetchData() {
+      console.log("fetch data");
+      this.loadMailbox();
+
+      await this.loadEmails();
     },
     loadMailbox() {
       this.db("mailboxes")
@@ -113,7 +123,7 @@ export default {
           [this.mailbox] = rows;
         });
     },
-    async loadEmails(selectFirst = false) {
+    async loadEmails() {
       this.loading = true;
 
       await this.db("emails")
@@ -124,10 +134,6 @@ export default {
           this.emails = rows;
 
           this.loading = false;
-
-          if (selectFirst && this.emails.length > 0) {
-            this.showEmail(this.emails[0]);
-          }
         });
     },
     setupMenu() {

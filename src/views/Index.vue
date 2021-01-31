@@ -76,13 +76,16 @@ export default {
       selectedMailboxForContextMenu: null,
     };
   },
-  async created() {
+  async mounted() {
     this.setupMenu();
 
-    await this.fetchEmails();
+    await this.fetchData();
+
+    this.emitter.on("fetch-data", () => this.fetchData());
   },
   methods: {
-    async fetchEmails() {
+    async fetchData() {
+      console.log("fetch data");
       this.isLoading = true;
 
       this.db("mailboxes")

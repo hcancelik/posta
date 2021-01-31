@@ -80,6 +80,8 @@ async function saveWindowBounds() {
         .on("end", () => {
           simpleParser(raw).then(async (emailData) => {
             await emailHelper.saveEmail(mailboxName, emailData, raw);
+
+            win.webContents.send("refresh-mailboxes");
           });
 
           callback(null);
