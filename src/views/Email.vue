@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-3">
+  <div class="px-6 py-6">
     <h1
       class="text-4xl font-bold mb-4 px-0.5 tracking-tight dark:text-gray-200"
     >
@@ -43,8 +43,8 @@
       </div>
     </div>
 
-    <div class="w-full mt-6 bg-gray-50 dark:bg-gray-600 rounded-md shadow">
-      <nav class="px-8 pt-2 rounded-t-md bg-gray-100 dark:bg-gray-400">
+    <div class="w-full mt-6 bg-gray-50 dark:bg-gray-300 rounded-md shadow">
+      <nav class="px-8 pt-2 rounded-t-md bg-gray-100 dark:bg-gray-800">
         <div class="-mb-px flex justify-start">
           <template v-for="(value, key) in tabs" :key="key">
             <a
@@ -59,22 +59,33 @@
       </nav>
 
       <div class="mt-2 px-8 py-4">
-        <div v-if="selectedTab === 'html'" v-html="email.html"></div>
-        <div v-if="selectedTab === 'html-source'">{{ email.html }}</div>
-        <div v-if="selectedTab === 'text'">{{ email.text }}</div>
-        <div v-if="selectedTab === 'headers'">
+        <div v-if="selectedTab === 'html'">
+          <iframe
+            class="w-full border-none"
+            :srcdoc="email.html"
+            id="html"
+            @load="resizeIframe"
+          ></iframe>
+        </div>
+        <div v-if="selectedTab === 'html-source'" class="dark:text-gray-600">
+          {{ email.html }}
+        </div>
+        <div v-if="selectedTab === 'text'" class="dark:text-gray-600">
+          {{ email.text }}
+        </div>
+        <div v-if="selectedTab === 'headers'" class="dark:text-gray-600 w-full">
           <table class="w-full table-auto">
             <tr
               v-for="(header, index) in JSON.parse(email.headers)"
               :key="index"
             >
               <th class="text-left uppercase p-2 text-sm">{{ header.key }}</th>
-              <td class="select-all">{{ header.line }}</td>
+              <td class="select-all py-2 px-3">{{ header.line }}</td>
             </tr>
           </table>
         </div>
         <div v-if="selectedTab === 'raw'">
-          <pre class="whitespace-normal text-gray-600 dark:text-gray-300 w-full"
+          <pre class="whitespace-pre-line dark:text-gray-600 w-full"
             >{{ formatRaw(email.raw) }}
           </pre>
         </div>
@@ -84,6 +95,8 @@
 </template>
 
 <script>
+const { shell } = require("electron");
+
 export default {
   name: "Email",
   props: {
@@ -115,7 +128,25 @@ export default {
       return str
         .substring(1, str.length - 1)
         .split("\\r\\n")
-        .join("\n\r");
+        .join("\r\n");
+    },
+    resizeIframe() {
+      const iframe = document.getElementById("html");
+
+      iframe.style.height = `${iframe.contentWindow.document.documentElement.scrollHeight}px`;
+
+      iframe.contentDocument.body.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const href =
+          event.target.href ||
+          event.target.parentElement.href ||
+          event.currentTarget.href;
+
+        if (href) {
+          shell.openExternal(href);
+        }
+      });
     },
   },
 };
