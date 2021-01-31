@@ -74,9 +74,9 @@
           </table>
         </div>
         <div v-if="selectedTab === 'raw'">
-          <pre class="text-gray-600 dark:text-gray-300 w-full">{{
-            formatRaw(email.raw)
-          }}</pre>
+          <pre class="whitespace-normal text-gray-600 dark:text-gray-300 w-full"
+            >{{ formatRaw(email.raw) }}
+          </pre>
         </div>
       </div>
     </div>
