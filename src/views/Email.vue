@@ -6,7 +6,7 @@
       {{ email.subject }}
     </h1>
 
-    <div class="bg-gray-100 dark:bg-gray-800 rounded-md p-4 shadow">
+    <div class="bg-gray-100 dark:bg-gray-800 rounded-md px-6 py-4 shadow">
       <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 xl:gap-1">
         <div class="xl:grid xl:grid-cols-12 xl:gap-4">
           <div class="label xl:col-span-3">To:</div>
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .label {
-  @apply text-gray-700 dark:text-gray-500 select-none xl:text-right;
+  @apply text-gray-700 font-semibold dark:text-gray-500 select-none xl:text-right;
 }
 
 .value {
