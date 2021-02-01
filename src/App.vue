@@ -18,7 +18,7 @@
 import transitions from "@/router/transitions";
 import Navigation from "./views/template/Navigation.vue";
 
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 export default {
   name: "App",
@@ -38,8 +38,23 @@ export default {
     },
   },
   mounted() {
-    ipcRenderer.on("refresh-mailboxes", async () => {
+    ipcRenderer.on("refresh-mailboxes", async (event, email) => {
       console.log("New email");
+
+      const notification = new remote.Notification({
+        title: "New Mail",
+        body: email.subject,
+      });
+
+      notification.on("click", () => {
+        this.$router.push({
+          name: "mailbox",
+          params: { mailboxId: email.mailboxId },
+          query: { emailId: email.id },
+        });
+      });
+
+      notification.show();
 
       this.emitter.emit("fetch-data");
     });

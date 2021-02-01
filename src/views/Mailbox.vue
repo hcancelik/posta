@@ -79,7 +79,7 @@ import ChevronLeftIcon from "@/views/components/icons/ChevronLeftIcon";
 export default {
   name: "Mailbox",
   components: { ChevronLeftIcon, Email, Loading, Inbox },
-  props: ["mailboxId"],
+  props: ["mailboxId", "emailId"],
   mixins: [dbMixin],
   data() {
     return {
@@ -96,7 +96,16 @@ export default {
 
     this.setupMenu();
 
-    if (this.emails.length > 0) {
+    if (this.emailId) {
+      console.log(this.emailId);
+      const selectedEmail = this.emails.find(
+        (email) => email.id === this.emailId
+      );
+
+      console.log(selectedEmail);
+
+      this.showEmail(selectedEmail);
+    } else if (this.emails.length > 0) {
       this.showEmail(this.emails[0]);
     }
 

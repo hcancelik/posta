@@ -23,7 +23,7 @@ export default {
     const replyTo = email.replyTo ? email.replyTo.text : null;
     const { subject, html, text, messageId, headerLines: headers } = email;
 
-    await db("emails").insert({
+    const record = await db("emails").insert({
       mailbox_id: mailboxId,
       from,
       to,
@@ -39,5 +39,11 @@ export default {
       read: false,
       created_at: new Date().toISOString(),
     });
+
+    return {
+      id: record,
+      mailboxId,
+      subject,
+    };
   },
 };

@@ -9,7 +9,7 @@ const routes = [
     component: Index,
   },
   {
-    path: "/:mailboxId",
+    path: "/:mailboxId/:emailId?",
     name: "mailbox",
     component: () => import("@/views/Mailbox"),
     props: true,
