@@ -43,7 +43,9 @@
       </div>
     </div>
 
-    <div class="w-full mt-6 bg-gray-50 dark:bg-gray-300 rounded-md shadow">
+    <div
+      class="w-full mt-6 bg-gray-50 dark:bg-gray-500 dark:text-gray-200 rounded-md shadow"
+    >
       <nav class="px-8 pt-2 rounded-t-md bg-gray-100 dark:bg-gray-800">
         <div class="-mb-px flex justify-start">
           <template v-for="(value, key) in tabs" :key="key">
@@ -67,13 +69,15 @@
             @load="resizeIframe"
           ></iframe>
         </div>
-        <div v-if="selectedTab === 'html-source'" class="dark:text-gray-600">
+        <div v-if="selectedTab === 'html-source'" class="dark:text-gray-200">
           {{ email.html }}
         </div>
-        <div v-if="selectedTab === 'text'" class="dark:text-gray-600">
-          {{ email.text }}
+        <div v-if="selectedTab === 'text'" class="dark:text-gray-200">
+          <div class="whitespace-pre-line">
+            {{ formatRaw(email.text) }}
+          </div>
         </div>
-        <div v-if="selectedTab === 'headers'" class="dark:text-gray-600 w-full">
+        <div v-if="selectedTab === 'headers'" class="dark:text-gray-200 w-full">
           <table class="w-full table-auto">
             <tr
               v-for="(header, index) in JSON.parse(email.headers)"
@@ -81,13 +85,17 @@
             >
               <th class="text-left uppercase p-2 text-sm">{{ header.key }}:</th>
               <td class="select-all py-2 px-3">
-                {{ header.line.replace(new RegExp(`${header.key}:`, "i"), "") }}
+                <template v-if="header.line">
+                  {{
+                    header.line.replace(new RegExp(`${header.key}:`, "i"), "")
+                  }}
+                </template>
               </td>
             </tr>
           </table>
         </div>
-        <div v-if="selectedTab === 'raw'">
-          <div class="whitespace-pre-line dark:text-gray-600 w-full">
+        <div v-if="selectedTab === 'raw'" class="dark:text-gray-200 w-full">
+          <div class="whitespace-pre-line">
             {{ formatRaw(email.raw) }}
           </div>
         </div>
