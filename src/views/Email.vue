@@ -79,15 +79,17 @@
               v-for="(header, index) in JSON.parse(email.headers)"
               :key="index"
             >
-              <th class="text-left uppercase p-2 text-sm">{{ header.key }}</th>
-              <td class="select-all py-2 px-3">{{ header.line }}</td>
+              <th class="text-left uppercase p-2 text-sm">{{ header.key }}:</th>
+              <td class="select-all py-2 px-3">
+                {{ header.line.replace(new RegExp(`${header.key}:`, "i"), "") }}
+              </td>
             </tr>
           </table>
         </div>
         <div v-if="selectedTab === 'raw'">
-          <pre class="whitespace-pre-line dark:text-gray-600 w-full"
-            >{{ formatRaw(email.raw) }}
-          </pre>
+          <div class="whitespace-pre-line dark:text-gray-600 w-full">
+            {{ formatRaw(email.raw) }}
+          </div>
         </div>
       </div>
     </div>
@@ -112,8 +114,8 @@ export default {
         html: "HTML",
         "html-source": "HTML (Source)",
         text: "Text",
-        headers: "Headers",
         raw: "Raw",
+        headers: "Headers",
       },
     };
   },
