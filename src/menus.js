@@ -1,6 +1,7 @@
 const { shell, ipcMain } = require("electron");
 
 const isMac = process.platform === "darwin";
+const isDevelopment = process.env.NODE_ENV !== "production";
 
 const template = [
   // { role: 'appMenu' }
@@ -63,6 +64,7 @@ const template = [
       { role: "zoomOut" },
       { type: "separator" },
       { role: "togglefullscreen" },
+      ...(isDevelopment ? [{ role: "toggleDevTools" }] : []),
     ],
   },
   // { role: 'windowMenu' }
