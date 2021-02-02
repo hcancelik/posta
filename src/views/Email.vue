@@ -44,7 +44,7 @@
     </div>
 
     <div
-      class="w-full mt-6 bg-gray-50 dark:bg-gray-500 dark:text-gray-200 rounded-md shadow"
+      class="w-full mt-6 bg-gray-50 dark:bg-gray-600 dark:text-gray-200 rounded-md shadow"
     >
       <nav class="px-8 pt-2 rounded-t-md bg-gray-100 dark:bg-gray-800">
         <div class="-mb-px flex justify-start">
@@ -60,24 +60,41 @@
         </div>
       </nav>
 
-      <div class="mt-2 px-8 py-4">
-        <div v-if="selectedTab === 'html'">
+      <div class="">
+        <div v-if="selectedTab === 'html'" class="p-5">
           <iframe
-            class="w-full border-none"
+            class="w-full border-none rounded shadow"
             :srcdoc="email.html"
             id="html"
             @load="resizeIframe"
+            style="height: 800px"
           ></iframe>
         </div>
-        <div v-if="selectedTab === 'html-source'" class="dark:text-gray-200">
-          {{ email.html }}
+        <div v-if="selectedTab === 'html-source'">
+          <pre v-highlightjs="email.html" class="text-sm whitespace-pre-wrap">
+            <code class="html"></code>
+          </pre>
         </div>
-        <div v-if="selectedTab === 'text'" class="dark:text-gray-200">
-          <div class="whitespace-pre-line">
+        <div
+          v-if="selectedTab === 'text'"
+          class="text-gray-700 dark:text-gray-200 mt-2 px-8 py-4"
+        >
+          <div class="whitespace-pre">
             {{ formatRaw(email.text) }}
           </div>
         </div>
-        <div v-if="selectedTab === 'headers'" class="dark:text-gray-200 w-full">
+        <div
+          v-if="selectedTab === 'raw'"
+          class="text-gray-700 dark:text-gray-200 w-full mt-2 px-8 py-4"
+        >
+          <div class="whitespace-pre-line">
+            {{ formatRaw(email.raw) }}
+          </div>
+        </div>
+        <div
+          v-if="selectedTab === 'headers'"
+          class="text-gray-700 dark:text-gray-200 w-full mt-2 px-8 py-4"
+        >
           <table class="w-full table-auto">
             <tr
               v-for="(header, index) in JSON.parse(email.headers)"
@@ -93,11 +110,6 @@
               </td>
             </tr>
           </table>
-        </div>
-        <div v-if="selectedTab === 'raw'" class="dark:text-gray-200 w-full">
-          <div class="whitespace-pre-line">
-            {{ formatRaw(email.raw) }}
-          </div>
         </div>
       </div>
     </div>

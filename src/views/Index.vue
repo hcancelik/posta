@@ -4,7 +4,8 @@
 
     <template v-slot:sidebar>
       <ul
-        class="list-none border-b first:border-t-0 border-gray-100 dark:border-gray-700"
+        class="list-none first:border-t-0 border-gray-100 dark:border-gray-700"
+        :class="{ 'border-b': mailboxes.length > 0 }"
       >
         <template v-if="isLoading">
           <li class="p-1 first:border-t-0">
