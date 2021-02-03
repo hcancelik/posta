@@ -79,7 +79,7 @@
           v-if="selectedTab === 'text'"
           class="text-gray-700 dark:text-gray-200 mt-2 px-8 py-4"
         >
-          <div class="whitespace-pre">
+          <div class="whitespace-pre-line">
             {{ formatRaw(email.text) }}
           </div>
         </div>
