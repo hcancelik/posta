@@ -122,6 +122,8 @@ async function createWindow() {
       devTools: isDevelopment,
       enableRemoteModule: true,
     },
+    minWidth: 1200,
+    minHeight: 600,
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
