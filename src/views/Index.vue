@@ -28,9 +28,13 @@
               </div>
               <div class="w-11 justify-end">
                 <div
-                  class="p-1 rounded-full shadow-sm bg-green-500 dark:bg-green-600 text-center text-xs items-center justify-center text-white"
+                  class="p-1 rounded-full shadow-sm bg-green-500 dark:bg-green-600 flex text-center text-xs items-center justify-center text-white w-10 h-6"
                 >
-                  {{ mailbox.emails > 100 ? "100+" : mailbox.emails }}
+                  <template v-if="mailbox.emails > 100">100+</template>
+                  <template v-else-if="mailbox.emails === 0">
+                    <CheckIcon class="w-4 h-4" />
+                  </template>
+                  <template v-else>{{ mailbox.emails }}</template>
                 </div>
               </div>
               <div class="w-5 justify-end text-gray-300">
@@ -63,10 +67,11 @@ import NoMailbox from "@/views/components/NoMailbox";
 import dbMixin from "@/mixins/dbMixin";
 import Loading from "@/views/components/Loading";
 import ChevronRightIcon from "@/views/components/icons/ChevronRightIcon";
+import CheckIcon from "@/views/components/icons/CheckIcon";
 
 export default {
   name: "Index",
-  components: { ChevronRightIcon, Loading, NoMailbox, Inbox },
+  components: { CheckIcon, ChevronRightIcon, Loading, NoMailbox, Inbox },
   mixins: [dbMixin],
   data() {
     return {
