@@ -28,11 +28,11 @@
               </div>
               <div class="w-11 justify-end">
                 <div
-                  class="p-1 rounded-full shadow-sm bg-green-500 dark:bg-green-600 flex text-center text-xs items-center justify-center text-white w-10 h-6"
+                  class="rounded-full shadow-sm bg-green-500 dark:bg-green-600 flex text-center text-xs items-center justify-center text-white w-8 h-5 tracking-tighter"
                 >
-                  <template v-if="mailbox.emails > 100">100+</template>
+                  <template v-if="mailbox.emails > 99">99+</template>
                   <template v-else-if="mailbox.emails === 0">
-                    <CheckIcon class="w-4 h-4" />
+                    <CheckIcon class="w-3.5 h-3.5" />
                   </template>
                   <template v-else>{{ mailbox.emails }}</template>
                 </div>
