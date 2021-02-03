@@ -2,7 +2,10 @@
   <Inbox>
     <template v-slot:header>
       <div class="w-full flex justify-between items-center">
-        <div class="truncate">{{ mailbox.name }}</div>
+        <div class="truncate flex-1">{{ mailbox.name }}</div>
+        <template v-if="loading">
+          <Loading class="h-8 w-8" />
+        </template>
         <router-link
           :to="{ name: 'index' }"
           class="cursor-pointer rounded p-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-gray-300 items-center text-center transform active:translate-y-0.5 shadow"
@@ -16,13 +19,7 @@
       <ul
         class="list-none first:border-t-0 border-b border-gray-100 dark:border-gray-700"
       >
-        <template v-if="loading">
-          <li class="p-2">
-            <Loading>Loading emails</Loading>
-          </li>
-        </template>
         <li
-          v-else
           v-for="email in emails"
           :key="email.id"
           class="w-full px-4 py-4 list-item flex flex-row flex-no-wrap"
@@ -141,7 +138,8 @@ export default {
         .orderBy("created_at", "desc")
         .then((rows) => {
           this.emails = rows;
-
+        })
+        .finally(() => {
           this.loading = false;
         });
     },

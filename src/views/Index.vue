@@ -1,23 +1,23 @@
 <template>
   <Inbox>
-    <template v-slot:header>Mailboxes</template>
+    <template v-slot:header>
+      <div class="flex justify-between items-center">
+        Mailboxes
+        <template v-if="isLoading">
+          <Loading class="h-8 w-8" />
+        </template>
+      </div>
+    </template>
 
     <template v-slot:sidebar>
       <ul
         class="list-none first:border-t-0 border-gray-100 dark:border-gray-700"
         :class="{ 'border-b': mailboxes.length > 0 }"
       >
-        <template v-if="isLoading">
-          <li class="p-1 first:border-t-0">
-            <Loading>Loading mailboxes...</Loading>
-          </li>
-        </template>
-        <template
-          v-else-if="mailboxes.length > 0"
-          v-for="mailbox in mailboxes"
-          :key="mailbox.id"
-        >
+        <template v-if="mailboxes.length > 0">
           <router-link
+            v-for="mailbox in mailboxes"
+            :key="mailbox.id"
             :to="{ name: 'mailbox', params: { mailboxId: mailbox.id } }"
             @contextmenu="openContextMail(mailbox)"
             :id="mailbox.id"
