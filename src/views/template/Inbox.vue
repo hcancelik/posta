@@ -11,7 +11,11 @@
             <slot name="header"></slot>
           </h2>
         </div>
-        <div class="overflow-y-scroll">
+        <div
+          class="overflow-y-scroll h-full"
+          id="sidebar"
+          @scroll="handleScroll"
+        >
           <div class="mt-16">
             <slot name="sidebar"></slot>
           </div>
@@ -28,5 +32,10 @@
 <script>
 export default {
   name: "Inbox",
+  methods: {
+    handleScroll(event) {
+      this.$emit("handleScroll", event);
+    },
+  },
 };
 </script>

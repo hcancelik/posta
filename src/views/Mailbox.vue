@@ -1,5 +1,5 @@
 <template>
-  <Inbox>
+  <Inbox @handleScroll="handleScroll">
     <template v-slot:header>
       <div class="w-full flex justify-between items-center">
         <div class="truncate flex-1">{{ mailboxName }}</div>
@@ -85,6 +85,8 @@ export default {
       emails: [],
       emailContextMenu: null,
       selectedEmailForContextMenu: null,
+      page: 0,
+      numOfEmails: 20,
     };
   },
   computed: {
@@ -98,12 +100,9 @@ export default {
     this.setupMenu();
 
     if (this.emailId) {
-      console.log(this.emailId);
       const selectedEmail = this.emails.find(
         (email) => email.id === this.emailId
       );
-
-      console.log(selectedEmail);
 
       this.showEmail(selectedEmail);
     } else if (this.emails.length > 0) {
@@ -113,6 +112,14 @@ export default {
     this.emitter.on("fetch-data", () => this.fetchData());
   },
   methods: {
+    handleScroll(event) {
+      if (
+        event.target.scrollTop + event.target.clientHeight >=
+        event.target.scrollHeight
+      ) {
+        this.loadEmails();
+      }
+    },
     formatDate(date) {
       return new Intl.DateTimeFormat("en-US", {
         dateStyle: "short",
@@ -122,17 +129,24 @@ export default {
     fetchData() {
       console.log("fetch data");
 
-      this.loadEmails();
+      this.loadEmails(0);
     },
-    async loadEmails() {
+    async loadEmails(page = this.page) {
       this.loading = true;
 
       await this.db("emails")
         .select("*")
         .where("mailbox_id", this.mailboxId)
         .orderBy("created_at", "desc")
+        .limit(this.numOfEmails)
+        .offset(page * this.numOfEmails)
         .then((rows) => {
-          this.emails = rows;
+          if (page === 0) {
+            this.emails = rows;
+          } else {
+            this.emails = this.emails.concat(rows);
+          }
+          this.page = page + 1;
         })
         .finally(() => {
           this.loading = false;
