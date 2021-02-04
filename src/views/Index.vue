@@ -3,9 +3,9 @@
     <template v-slot:header>
       <div class="flex justify-between items-center">
         Mailboxes
-        <template v-if="isLoading">
+        <div v-if="loading">
           <Loading class="h-8 w-8" />
-        </template>
+        </div>
       </div>
     </template>
 
@@ -18,7 +18,11 @@
           <router-link
             v-for="mailbox in mailboxes"
             :key="mailbox.id"
-            :to="{ name: 'mailbox', params: { mailboxId: mailbox.id } }"
+            :to="{
+              name: 'mailbox',
+              params: { mailboxId: mailbox.id },
+              query: { mailbox: encodeURI(mailbox.name) },
+            }"
             @contextmenu="openContextMail(mailbox)"
             :id="mailbox.id"
           >
@@ -75,7 +79,7 @@ export default {
   mixins: [dbMixin],
   data() {
     return {
-      isLoading: true,
+      loading: true,
       selectedMailbox: null,
       mailboxes: [],
       mailboxContextMenu: null,
@@ -92,7 +96,7 @@ export default {
   methods: {
     async fetchData() {
       console.log("fetch data");
-      this.isLoading = true;
+      this.loading = true;
 
       this.db("mailboxes")
         .joinRaw(
@@ -108,7 +112,7 @@ export default {
           this.mailboxes = rows;
         })
         .finally(() => {
-          this.isLoading = false;
+          this.loading = false;
         });
     },
     setupMenu() {

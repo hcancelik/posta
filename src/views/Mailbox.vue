@@ -2,7 +2,7 @@
   <Inbox>
     <template v-slot:header>
       <div class="w-full flex justify-between items-center">
-        <div class="truncate flex-1">{{ mailbox.name }}</div>
+        <div class="truncate flex-1">{{ mailboxName }}</div>
         <template v-if="loading">
           <Loading class="h-8 w-8" />
         </template>
@@ -82,14 +82,18 @@ export default {
     return {
       loading: false,
       selectedEmail: null,
-      mailbox: {},
       emails: [],
       emailContextMenu: null,
       selectedEmailForContextMenu: null,
     };
   },
+  computed: {
+    mailboxName() {
+      return decodeURI(this.$route.query.mailbox || "");
+    },
+  },
   async mounted() {
-    await this.fetchData();
+    this.fetchData();
 
     this.setupMenu();
 
@@ -115,19 +119,10 @@ export default {
         timeStyle: "short",
       }).format(new Date(date));
     },
-    async fetchData() {
+    fetchData() {
       console.log("fetch data");
-      this.loadMailbox();
 
-      await this.loadEmails();
-    },
-    loadMailbox() {
-      this.db("mailboxes")
-        .select("id", "name")
-        .where("id", this.mailboxId)
-        .then((rows) => {
-          [this.mailbox] = rows;
-        });
+      this.loadEmails();
     },
     async loadEmails() {
       this.loading = true;
