@@ -3,9 +3,11 @@
     <template v-slot:header>
       <div class="w-full flex justify-between items-center">
         <div class="truncate flex-1">{{ mailboxName }}</div>
-        <template v-if="loading">
-          <Loading class="h-8 w-8" />
-        </template>
+        <transition class="duration-300">
+          <div v-show="loading">
+            <Loading class="h-8 w-8" />
+          </div>
+        </transition>
         <router-link
           :to="{ name: 'index' }"
           class="cursor-pointer rounded p-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-gray-300 items-center text-center transform active:translate-y-0.5 shadow"
