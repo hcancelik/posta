@@ -12,8 +12,36 @@
           :to="{ name: 'index' }"
           class="cursor-pointer rounded p-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-gray-300 items-center text-center transform active:translate-y-0.5 shadow"
         >
-          <chevron-left-icon />
+          <chevron-left-icon class="w-5 h-5" />
         </router-link>
+        <a
+          class="cursor-pointer rounded p-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-gray-300 items-center text-center transform active:translate-y-0.5 shadow ml-2"
+          @click="showOptions = !showOptions"
+          v-click-away="clickedAway"
+        >
+          <more-icon class="w-5 h-5" />
+          <div
+            v-if="showOptions"
+            class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-600 text-left font-semibold"
+          >
+            <div class="py-1" role="menu">
+              <a
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200 cursor-pointer border-b border-gray-100 dark:border-gray-700"
+                role="menuitem"
+                @click="markAsAllRead"
+              >
+                Mark All As Read
+              </a>
+              <a
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200 cursor-pointer"
+                role="menuitem"
+                @click="deleteMailbox(mailboxId)"
+              >
+                Delete Mailbox
+              </a>
+            </div>
+          </div>
+        </a>
       </div>
     </template>
 
@@ -72,12 +100,14 @@ import { remote } from "electron";
 import Loading from "@/views/components/Loading";
 import Email from "@/views/Email";
 import ChevronLeftIcon from "@/views/components/icons/ChevronLeftIcon";
+import MoreIcon from "@/views/components/icons/MoreIcon";
+import { mixin as VueClickAway } from "vue3-click-away";
 
 export default {
   name: "Mailbox",
-  components: { ChevronLeftIcon, Email, Loading, Inbox },
+  components: { MoreIcon, ChevronLeftIcon, Email, Loading, Inbox },
   props: ["mailboxId", "emailId"],
-  mixins: [dbMixin],
+  mixins: [dbMixin, VueClickAway],
   data() {
     return {
       loading: false,
@@ -87,6 +117,7 @@ export default {
       selectedEmailForContextMenu: null,
       page: 0,
       numOfEmails: 20,
+      showOptions: false,
     };
   },
   computed: {
@@ -232,6 +263,23 @@ export default {
         .then(() => {
           this.$router.push({ name: "index" });
         });
+    },
+    markAsAllRead() {
+      this.db("emails")
+        .where("mailbox_id", this.mailboxId)
+        .update({
+          read: true,
+        })
+        .then(() => {
+          this.emails = this.emails.map((email) => {
+            return { ...email, read: true };
+          });
+
+          this.$toast.success("All messages are marked as read.");
+        });
+    },
+    clickedAway() {
+      this.showOptions = false;
     },
   },
 };
