@@ -1,3 +1,5 @@
+import { autoUpdater } from "electron-updater";
+
 const { shell, ipcMain } = require("electron");
 
 const isMac = process.platform === "darwin";
@@ -11,6 +13,12 @@ const template = [
           label: process.env.VUE_APP_NAME,
           submenu: [
             { role: "about" },
+            {
+              label: "Check For Updates",
+              click: async () => {
+                await autoUpdater.checkForUpdatesAndNotify();
+              },
+            },
             { type: "separator" },
             { role: "services" },
             { type: "separator" },
