@@ -106,7 +106,7 @@ async function saveWindowBounds() {
 async function startSmtpServer() {
   const port = (await settings.get("port")) || "2525";
 
-  server.listen(port, "0.0.0.0", async () => {
+  server.listen(port, async () => {
     await settings.set("server-running", true);
 
     win.webContents.send("server-status-change", {
