@@ -158,8 +158,6 @@ export default {
       }).format(new Date(date));
     },
     async fetchData() {
-      console.log("fetch data");
-
       await this.loadEmails(0);
     },
     async loadEmails(page = this.page) {

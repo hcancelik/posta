@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     async fetchData() {
-      console.log("fetch data");
       this.loading = true;
 
       this.db("mailboxes")

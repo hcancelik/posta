@@ -39,7 +39,6 @@ export default {
   },
   async mounted() {
     ipcRenderer.on("refresh-mailboxes", async (event, data) => {
-      console.log("New email");
       const { email, mailboxName, notificationSoundSetting } = data;
 
       const notification = new remote.Notification({
