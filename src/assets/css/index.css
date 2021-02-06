@@ -12,6 +12,12 @@
     @apply outline-none focus:outline-none active:outline-none;
 }
 
+*, *::after, *::before {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+}
+
 .c-toast {
     font-family: inherit !important;
     @apply rounded select-none shadow-lg !important;

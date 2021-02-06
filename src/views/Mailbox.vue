@@ -22,7 +22,7 @@
           <more-icon class="w-5 h-5" />
           <div
             v-if="showOptions"
-            class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-600 text-left font-semibold"
+            class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-600 text-left font-normal"
           >
             <div class="py-1" role="menu">
               <a
