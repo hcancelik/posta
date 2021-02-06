@@ -10,9 +10,7 @@ module.exports = {
           entitlements: "build/entitlements.mac.plist",
           entitlementsInherit: "build/entitlements.mac.plist",
         },
-        build: {
-          afterSign: "notarize.js",
-        },
+        afterSign: "notarize.js",
         publish: ["github"],
       },
     },
