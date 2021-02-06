@@ -3,13 +3,22 @@
     <div class="w-16 bg-gray-200 dark:bg-gray-900">
       <Navigation />
     </div>
-
     <div class="flex-1 flex overflow-hidden">
-      <router-view v-slot="{ Component }">
-        <transition :name="transitionName" mode="out-in" appear>
-          <component :is="Component" />
+      <div class="w-full">
+        <transition>
+          <div
+            v-if="serverError"
+            class="block w-full p-3 bg-red-700 text-white font-semibold shadow"
+          >
+            {{ serverError }}
+          </div>
         </transition>
-      </router-view>
+        <router-view v-slot="{ Component }">
+          <transition :name="transitionName" mode="out-in" appear>
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -26,6 +35,7 @@ export default {
   data() {
     return {
       transitionName: "",
+      serverError: null,
     };
   },
   watch: {
@@ -60,6 +70,16 @@ export default {
       notification.show();
 
       this.emitter.emit("fetch-data");
+    });
+
+    ipcRenderer.on("server-status-change", async (event, data) => {
+      if (data.status === false && data.code === "EADDRINUSE") {
+        this.serverError = data.message;
+      } else {
+        this.serverError = null;
+      }
+
+      this.emitter.emit("server-status-changed", data);
     });
   },
 };

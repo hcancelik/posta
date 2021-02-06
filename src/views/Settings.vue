@@ -27,7 +27,9 @@
           <span class="text-green-700 font-semibold" v-if="status">
             Running...
           </span>
-          <span class="text-red-700 font-semibold" v-else>Stopped</span>
+          <span class="text-red-700 font-semibold" v-else>
+            {{ statusMessage }}
+          </span>
         </div>
       </BoxRow>
     </Box>
@@ -72,6 +74,7 @@ export default {
   data() {
     return {
       status: false,
+      statusMessage: "",
       port: "2525",
       theme: "system",
       notificationSound: true,
@@ -91,6 +94,11 @@ export default {
 
     this.notificationSound =
       notificationSoundSetting === undefined ? true : notificationSoundSetting;
+
+    this.emitter.on("server-status-changed", (data) => {
+      this.status = data.status;
+      this.statusMessage = data.message;
+    });
   },
   methods: {
     async changeServerStatus() {
@@ -102,7 +110,7 @@ export default {
     },
     async startServer() {
       await ipcRenderer.invoke("server:start").then(() => {
-        this.$toast.success("Server is successfully started.");
+        this.statusMessage = "Server is starting...";
       });
     },
     async stopServer() {

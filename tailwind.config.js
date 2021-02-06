@@ -14,6 +14,9 @@ module.exports = {
       boxShadow: {
         light: "0 1px 2px 0 rgba(255, 255, 255, 0.05)",
       },
+      fontSize: {
+        md: "0.95rem",
+      },
     },
   },
   variants: {

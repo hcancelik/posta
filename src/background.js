@@ -105,14 +105,35 @@ async function saveWindowBounds() {
 async function startSmtpServer() {
   const port = (await settings.get("port")) || "2525";
 
-  server.listen(port, "127.0.0.1", async () => {
+  server.listen(port, "0.0.0.0", async () => {
     await settings.set("server-running", true);
+
+    win.webContents.send("server-status-change", {
+      status: true,
+      message: "Running",
+    });
+  });
+
+  server.on("error", async (error) => {
+    win.webContents.send("server-status-change", {
+      status: false,
+      message:
+        error.code === "EADDRINUSE"
+          ? "Cannot start server. Port in use! Please try with different port number."
+          : error.message,
+      code: error.code,
+    });
   });
 }
 
 async function stopSmtpServer() {
   server.close(async () => {
     await settings.set("server-running", false);
+
+    win.webContents.send("server-status-change", {
+      status: false,
+      message: "Stopped",
+    });
   });
 }
 
@@ -165,8 +186,6 @@ async function createWindow() {
     win.center();
   });
 
-  await startSmtpServer();
-
   ipcMain.handle("server:start", async () => {
     await startSmtpServer();
   });
@@ -179,7 +198,11 @@ async function createWindow() {
 app.on("activate", async () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) await createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) {
+    await createWindow();
+
+    await startSmtpServer();
+  }
 });
 
 // This method will be called when Electron has finished
@@ -198,6 +221,8 @@ app.on("ready", async () => {
   }
 
   await createWindow();
+
+  await startSmtpServer();
 });
 
 // Exit cleanly on request from parent process in development mode.
