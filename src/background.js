@@ -85,7 +85,7 @@ async function saveWindowBounds() {
               raw
             );
 
-            win.webContents.send("refresh-mailboxes", email);
+            win.webContents.send("refresh-mailboxes", { email, mailboxName });
           });
 
           callback(null);

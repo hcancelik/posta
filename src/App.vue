@@ -38,8 +38,9 @@ export default {
     },
   },
   mounted() {
-    ipcRenderer.on("refresh-mailboxes", async (event, email) => {
+    ipcRenderer.on("refresh-mailboxes", async (event, data) => {
       console.log("New email");
+      const { email, mailboxName } = data;
 
       const notification = new remote.Notification({
         title: "New Mail",
@@ -50,7 +51,7 @@ export default {
         this.$router.push({
           name: "mailbox",
           params: { mailboxId: email.mailboxId },
-          query: { emailId: email.id },
+          query: { emailId: email.id, mailbox: mailboxName },
         });
       });
 
