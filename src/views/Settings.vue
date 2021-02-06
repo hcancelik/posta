@@ -40,6 +40,21 @@
           <option value="dark">Always Dark</option>
         </select>
       </BoxRow>
+
+      <BoxRow label="Notification Sound">
+        <div class="flex items-center">
+          <input
+            class="checkbox"
+            type="checkbox"
+            v-model="notificationSound"
+            @change="updateSetting('notification-sound', notificationSound)"
+          />
+          <span class="text-green-700 font-semibold" v-if="notificationSound">
+            On
+          </span>
+          <span class="text-gray-500 font-semibold" v-else>Off</span>
+        </div>
+      </BoxRow>
     </Box>
   </div>
 </template>
@@ -59,6 +74,7 @@ export default {
       status: false,
       port: "2525",
       theme: "system",
+      notificationSound: true,
     };
   },
   computed: {
@@ -70,6 +86,11 @@ export default {
     this.theme = (await settings.get("theme")) || "system";
     this.port = (await settings.get("port")) || "2525";
     this.status = await settings.get("server-running");
+
+    const notificationSoundSetting = await settings.get("notification-sound");
+
+    this.notificationSound =
+      notificationSoundSetting === undefined ? true : notificationSoundSetting;
   },
   methods: {
     async changeServerStatus() {

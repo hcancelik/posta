@@ -69,7 +69,7 @@ async function saveWindowBounds() {
     onAuth(auth, session, callback) {
       callback(null, { user: auth.username });
     },
-    onData(stream, session, callback) {
+    async onData(stream, session, callback) {
       const mailboxName = session.user;
       let raw = "";
 
@@ -85,7 +85,15 @@ async function saveWindowBounds() {
               raw
             );
 
-            win.webContents.send("refresh-mailboxes", { email, mailboxName });
+            const notificationSoundSetting = await settings.get(
+              "notification-sound"
+            );
+
+            win.webContents.send("refresh-mailboxes", {
+              email,
+              mailboxName,
+              notificationSoundSetting,
+            });
           });
 
           callback(null);
