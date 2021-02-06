@@ -20,6 +20,7 @@ module.exports = {
       outline: ["active"],
       boxShadow: ["active"],
       borderWidth: ["first"],
+      backgroundImage: ["dark"],
     },
   },
   plugins: [],
