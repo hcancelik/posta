@@ -13,7 +13,6 @@ import knex from "knex";
 import { SMTPServer } from "smtp-server";
 import { simpleParser } from "mailparser";
 import { autoUpdater } from "electron-updater";
-import os from "os";
 import template from "./menus";
 import knexfile from "../knexfile";
 import emailHelper from "./helpers/email";
@@ -107,7 +106,7 @@ async function saveWindowBounds() {
 async function startSmtpServer() {
   const port = (await settings.get("port")) || "2525";
 
-  server.listen(port, os.hostname(), async () => {
+  server.listen(port, async () => {
     await settings.set("server-running", true);
 
     win.webContents.send("server-status-change", {
