@@ -1,24 +1,12 @@
-# posta
+# Posta - Local Email Testing
 
-## Project setup
-```
-npm install
-```
+Posta is a cross platform desktop application to test your emails locally. Simply point your SMTP settings to Posta configuration and receive emails with ease.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Features
 
-### Lints and fixes files
-```
-npm run lint
-```
+- Unlimited Mailboxes
+- Unlimited Emails
+- Dark Mode
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+More details are coming soon.
