@@ -34,7 +34,7 @@ export default {
         (t) => t.to === to.name && t.from === from.name
       );
 
-      this.transitionName = transition ? transition.class : "";
+      this.transitionName = transition ? transition.class : "slide-fade";
     },
   },
   mounted() {

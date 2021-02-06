@@ -25,6 +25,17 @@
 
     <div class="flex flex-col items-center justify-end w-full">
       <router-link
+        :to="{ name: 'help' }"
+        class="w-full flex justify-center items-center p-2.5"
+      >
+        <button
+          class="nav-button"
+          :class="{ 'nav-button-active': $route.name === 'help' }"
+        >
+          <help-icon class="flex justify-center" />
+        </button>
+      </router-link>
+      <router-link
         :to="{ name: 'settings' }"
         class="w-full flex justify-center items-center p-2.5"
       >
@@ -42,9 +53,10 @@
 <script>
 import HomeIcon from "@/views/components/icons/HomeIcon";
 import SettingIcon from "@/views/components/icons/SettingIcon";
+import HelpIcon from "@/views/components/icons/HelpIcon";
 
 export default {
   name: "Navigation",
-  components: { SettingIcon, HomeIcon },
+  components: { HelpIcon, SettingIcon, HomeIcon },
 };
 </script>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import Help from "@/views/Help";
 import Index from "../views/Index.vue";
 import Settings from "../views/Settings.vue";
 
@@ -13,6 +14,11 @@ const routes = [
     name: "mailbox",
     component: () => import("@/views/Mailbox"),
     props: true,
+  },
+  {
+    path: "/help",
+    name: "help",
+    component: Help,
   },
   {
     path: "/settings",
