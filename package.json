@@ -16,7 +16,8 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "knex:reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
+    "knex:reset": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "publish": "vue-cli-service electron:build -- -p always"
   },
   "main": "background.js",
   "dependencies": {
@@ -27,6 +28,7 @@
     "electron": "^11.0.0",
     "electron-devtools-installer": "^3.1.0",
     "electron-settings": "^4.0.2",
+    "electron-updater": "^4.3.5",
     "highlight.js": "^10.5.0",
     "install": "^0.13.0",
     "knex": "^0.21.16",

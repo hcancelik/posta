@@ -12,6 +12,7 @@ import settings from "electron-settings";
 import knex from "knex";
 import { SMTPServer } from "smtp-server";
 import { simpleParser } from "mailparser";
+import { autoUpdater } from "electron-updater";
 import template from "./menus";
 import knexfile from "../knexfile";
 import emailHelper from "./helpers/email";
@@ -163,6 +164,8 @@ async function createWindow() {
     createProtocol("app");
 
     await win.loadURL("app://./index.html");
+
+    await autoUpdater.checkForUpdatesAndNotify();
   }
 
   win.on("resize", async () => {
