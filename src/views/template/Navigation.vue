@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col justify-between">
     <div class="flex flex-col items-center justify-center w-full">
-      <div class="p-2 mb-2 shadow-sm dark:shadow-light">
+      <div class="p-3 mb-2 shadow-sm dark:shadow-light">
         <img
           src="../../assets/images/logo.svg"
           class="w-full h-full"
