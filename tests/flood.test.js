@@ -6,7 +6,7 @@ async function main() {
     host: "127.0.0.1",
     port: 2525,
     auth: {
-      user: "Test Mailbox 4",
+      user: "Test Mailbox 2",
       pass: " ",
     },
   });

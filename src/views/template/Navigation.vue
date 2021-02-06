@@ -1,8 +1,12 @@
 <template>
   <div class="h-full flex flex-col justify-between">
     <div class="flex flex-col items-center justify-center w-full">
-      <div class="p-3">
-        <img src="../../assets/images/logo.png" alt="Posta" />
+      <div class="p-2 mb-2 shadow-sm dark:shadow-light">
+        <img
+          src="../../assets/images/logo.svg"
+          class="w-full h-full"
+          alt="Posta"
+        />
       </div>
       <router-link
         :to="{ name: 'index' }"
@@ -44,5 +48,3 @@ export default {
   components: { SettingIcon, HomeIcon },
 };
 </script>
-
-<style scoped></style>

@@ -10,10 +10,7 @@
     </template>
 
     <template v-slot:sidebar>
-      <ul
-        class="list-none first:border-t-0 border-gray-100 dark:border-gray-700"
-        :class="{ 'border-b': mailboxes.length > 0 }"
-      >
+      <ul class="list-none">
         <template v-if="mailboxes.length > 0">
           <router-link
             v-for="mailbox in mailboxes"

@@ -11,6 +11,9 @@ module.exports = {
       spacing: {
         88: "22rem",
       },
+      boxShadow: {
+        light: "0 1px 2px 0 rgba(255, 255, 255, 0.05)",
+      },
     },
   },
   variants: {
@@ -18,7 +21,7 @@ module.exports = {
       opacity: ["disabled"],
       translate: ["active"],
       outline: ["active"],
-      boxShadow: ["active"],
+      boxShadow: ["active", "dark"],
       borderWidth: ["first"],
       backgroundImage: ["dark"],
     },

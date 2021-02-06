@@ -6,7 +6,7 @@
       <div class="w-88 h-screen overflow-y-scroll">
         <div class="fixed bg-gray-50 w-88 dark:bg-gray-800 z-50">
           <h2
-            class="text-black dark:text-gray-200 font-bold text-2xl py-4 px-3.5 shadow-sm"
+            class="text-black dark:text-gray-200 font-bold text-2xl py-4 px-3.5 shadow-sm dark:shadow-light"
           >
             <slot name="header"></slot>
           </h2>

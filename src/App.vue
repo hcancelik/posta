@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen flex">
-    <div class="w-16 bg-gray-200 dark:bg-gray-900 shadow">
+    <div class="w-16 bg-gray-200 dark:bg-gray-900">
       <Navigation />
     </div>
 

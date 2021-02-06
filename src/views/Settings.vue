@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 overflow-y-scroll p-6">
+  <div class="flex-1 overflow-y-scroll px-6 py-3">
     <PageHeader>Settings</PageHeader>
 
     <Box

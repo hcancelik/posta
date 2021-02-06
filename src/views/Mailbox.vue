@@ -18,9 +18,7 @@
     </template>
 
     <template v-slot:sidebar>
-      <ul
-        class="list-none first:border-t-0 border-b border-gray-100 dark:border-gray-700"
-      >
+      <ul class="list-none">
         <li
           v-for="email in emails"
           :key="email.id"
@@ -97,7 +95,7 @@ export default {
     },
   },
   async mounted() {
-    this.fetchData();
+    await this.fetchData();
 
     this.setupMenu();
 
@@ -128,10 +126,10 @@ export default {
         timeStyle: "short",
       }).format(new Date(date));
     },
-    fetchData() {
+    async fetchData() {
       console.log("fetch data");
 
-      this.loadEmails(0);
+      await this.loadEmails(0);
     },
     async loadEmails(page = this.page) {
       this.loading = true;
@@ -241,6 +239,6 @@ export default {
 
 <style scoped>
 .selected-email {
-  @apply bg-gray-100 hover:bg-gray-100 border-l-4 border-blue-600 border-t-0 dark:bg-gray-700 dark:hover:bg-gray-700 shadow-inner !important;
+  @apply bg-gray-100 hover:bg-gray-100 border-l-4 border-blue-600 border-b-0 dark:bg-gray-700 dark:hover:bg-gray-700 shadow-inner !important;
 }
 </style>
