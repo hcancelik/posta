@@ -4,6 +4,15 @@ module.exports = {
       nodeIntegration: true,
       externals: ["knex", "sqlite3"],
       builderOptions: {
+        mac: {
+          hardenedRuntime: true,
+          gatekeeperAssess: false,
+          entitlements: "build/entitlements.mac.plist",
+          entitlementsInherit: "build/entitlements.mac.plist",
+        },
+        build: {
+          afterSign: "notarize.js",
+        },
         publish: ["github"],
       },
     },
