@@ -21,7 +21,14 @@ export default {
     const cc = email.cc ? email.cc.text : null;
     const bcc = email.bcc ? email.bcc.text : null;
     const replyTo = email.replyTo ? email.replyTo.text : null;
-    const { subject, html, text, messageId, headerLines: headers } = email;
+    const {
+      subject,
+      html,
+      text,
+      messageId,
+      headerLines: headers,
+      attachments,
+    } = email;
 
     const record = await db("emails").insert({
       mailbox_id: mailboxId,
@@ -39,6 +46,27 @@ export default {
       read: false,
       created_at: new Date().toISOString(),
     });
+
+    if (attachments && attachments.length > 0) {
+      const attachmentPromises = [];
+
+      for (let i = 0; i < attachments.length; i += 1) {
+        const attachment = attachments[i];
+
+        attachmentPromises.push(
+          db("attachments").insert({
+            email_id: record,
+            filename: attachment.filename,
+            size: attachment.size,
+            content_type: attachment.contentType,
+            content: attachment.content,
+            created_at: new Date().toISOString(),
+          })
+        );
+      }
+
+      await Promise.all(attachmentPromises);
+    }
 
     return {
       id: record,

@@ -44,6 +44,28 @@
     </div>
 
     <div
+      class="bg-gray-100 dark:bg-gray-800 rounded-md px-6 py-6 shadow mt-4"
+      v-if="attachments.length > 0"
+    >
+      <div
+        class="text-gray-400 font-bold dark:text-gray-500 select-none uppercase text-sm"
+      >
+        Attachments
+      </div>
+      <div class="flex flex-row w-full flex-wrap items-center mt-2">
+        <div
+          v-for="attachment in attachments"
+          :key="attachment.id"
+          class="flex text-sm justify-center items-center font-medium py-1 px-2 rounded-md shadow-sm bg-blue-500 hover:bg-opacity-95 text-white transform active:translate-y-0.5 cursor-pointer m-1"
+          @click="downloadAttachment(attachment)"
+        >
+          <paper-clip-icon class="w-4 h-4 mr-2" />
+          {{ attachment.filename }}
+        </div>
+      </div>
+    </div>
+
+    <div
       class="w-full mt-6 bg-gray-50 dark:bg-gray-600 dark:text-gray-200 rounded-md shadow"
     >
       <nav class="px-8 pt-2 rounded-t-md bg-gray-100 dark:bg-gray-800">
@@ -60,7 +82,7 @@
         </div>
       </nav>
 
-      <div class="">
+      <div>
         <div v-if="selectedTab === 'html'" class="p-5">
           <iframe
             class="w-full border-none rounded shadow"
@@ -117,10 +139,15 @@
 </template>
 
 <script>
+import dbMixin from "@/mixins/dbMixin";
+import PaperClipIcon from "@/views/components/icons/PaperClipIcon";
+
 const { shell } = require("electron");
 
 export default {
   name: "Email",
+  components: { PaperClipIcon },
+  mixins: [dbMixin],
   props: {
     email: {
       required: true,
@@ -137,7 +164,11 @@ export default {
         raw: "Raw",
         headers: "Headers",
       },
+      attachments: [],
     };
+  },
+  async created() {
+    await this.fetchAttachments();
   },
   methods: {
     formatDate(date) {
@@ -147,6 +178,10 @@ export default {
       }).format(new Date(date));
     },
     formatRaw(str) {
+      if (!str) {
+        return "Text content is not provided.";
+      }
+
       return str
         .substring(1, str.length - 1)
         .split("\\r\\n")
@@ -169,6 +204,24 @@ export default {
           shell.openExternal(href);
         }
       });
+    },
+    async fetchAttachments() {
+      this.db("attachments")
+        .where("email_id", this.email.id)
+        .then((rows) => {
+          this.attachments = rows;
+        });
+    },
+    downloadAttachment(attachment) {
+      const blob = new Blob([attachment.content], {
+        type: attachment.content_type,
+      });
+      const link = document.createElement("a");
+
+      link.href = window.URL.createObjectURL(blob);
+      link.download = attachment.filename;
+
+      link.click();
     },
   },
 };
