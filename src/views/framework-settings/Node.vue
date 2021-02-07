@@ -5,7 +5,7 @@
     host: "127.0.0.1",
     port: {{ port }},
     auth: {
-      user: "Mailbox-Name",
+      user: "Your App Name",
       pass: " "
     }
   });</pre>

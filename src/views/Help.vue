@@ -36,6 +36,8 @@
             </option>
             <option value="Laravel">Laravel</option>
             <option value="Node">Nodemailer</option>
+            <option value="Ruby">Ruby on Rails</option>
+            <option value="Wordpress">Wordpress</option>
           </select>
         </div>
         <transition>
@@ -55,10 +57,12 @@ import BoxRow from "@/views/template/BoxRow";
 import PageHeader from "@/views/template/PageHeader";
 import Node from "@/views/framework-settings/Node";
 import Laravel from "@/views/framework-settings/Laravel";
+import Ruby from "@/views/framework-settings/Ruby";
+import Wordpress from "@/views/framework-settings/Wordpress";
 
 export default {
   name: "Help",
-  components: { Box, BoxRow, Node, Laravel, PageHeader },
+  components: { Box, BoxRow, Node, Laravel, PageHeader, Ruby, Wordpress },
   data() {
     return {
       port: "2525",
