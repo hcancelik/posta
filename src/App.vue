@@ -47,6 +47,9 @@ export default {
       this.transitionName = transition ? transition.class : "slide-fade";
     },
   },
+  async created() {
+    await ipcRenderer.invoke("server:start");
+  },
   async mounted() {
     ipcRenderer.on("refresh-mailboxes", async (event, data) => {
       const { email, mailboxName, notificationSoundSetting } = data;
@@ -79,7 +82,9 @@ export default {
         this.serverError = null;
       }
 
-      this.emitter.emit("server-status-changed", data);
+      await this.$nextTick(() => {
+        this.emitter.emit("server-status-changed", data);
+      });
     });
   },
 };

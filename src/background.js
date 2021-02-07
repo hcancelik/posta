@@ -20,7 +20,6 @@ import emailHelper from "./helpers/email";
 const isDevelopment = process.env.NODE_ENV !== "production";
 let win;
 let db;
-let server;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -57,51 +56,58 @@ async function saveWindowBounds() {
   const dbConfig = knexfile[process.env.NODE_ENV];
   db = knex(dbConfig);
 
-  await db.migrate.latest();
+  let config = {};
+
+  if (!isDevelopment) {
+    config = {
+      directory: `${process.resourcesPath}/migrations`,
+    };
+  }
+
+  await db.migrate.latest(config);
 })();
 
 // Setup SMTP Server
-(async () => {
-  server = new SMTPServer({
-    secure: false,
-    size: 1024 * 1024,
-    disableReverseLookup: true,
-    hideSTARTTLS: true,
-    onAuth(auth, session, callback) {
-      callback(null, { user: auth.username });
-    },
-    async onData(stream, session, callback) {
-      const mailboxName = session.user;
-      let raw = "";
+const server = new SMTPServer({
+  secure: false,
+  size: 1024 * 1024,
+  disableReverseLookup: true,
+  hideSTARTTLS: true,
+  onAuth(auth, session, callback) {
+    callback(null, { user: auth.username });
+  },
+  async onData(stream, session, callback) {
+    const mailboxName = session.user;
+    let raw = "";
 
-      stream
-        .on("data", (data) => {
-          raw += data;
-        })
-        .on("end", () => {
-          simpleParser(raw).then(async (emailData) => {
-            const email = await emailHelper.saveEmail(
-              mailboxName,
-              emailData,
-              raw
-            );
+    stream
+      .on("data", (data) => {
+        raw += data;
+      })
+      .on("end", () => {
+        simpleParser(raw).then(async (emailData) => {
+          const email = await emailHelper.saveEmail(
+            db,
+            mailboxName,
+            emailData,
+            raw
+          );
 
-            const notificationSoundSetting = await settings.get(
-              "notification-sound"
-            );
+          const notificationSoundSetting = await settings.get(
+            "notification-sound"
+          );
 
-            win.webContents.send("refresh-mailboxes", {
-              email,
-              mailboxName,
-              notificationSoundSetting,
-            });
+          win.webContents.send("refresh-mailboxes", {
+            email,
+            mailboxName,
+            notificationSoundSetting,
           });
-
-          callback(null);
         });
-    },
-  });
-})();
+
+        callback(null);
+      });
+  },
+});
 
 async function startSmtpServer() {
   const port = (await settings.get("port")) || "2525";
@@ -109,14 +115,16 @@ async function startSmtpServer() {
   server.listen(port, async () => {
     await settings.set("server-running", true);
 
-    win.webContents.send("server-status-change", {
+    await win.webContents.send("server-status-change", {
       status: true,
       message: "Running",
     });
   });
 
   server.on("error", async (error) => {
-    win.webContents.send("server-status-change", {
+    await settings.set("server-running", false);
+
+    await win.webContents.send("server-status-change", {
       status: false,
       message:
         error.code === "EADDRINUSE"
@@ -131,12 +139,28 @@ async function stopSmtpServer() {
   server.close(async () => {
     await settings.set("server-running", false);
 
-    win.webContents.send("server-status-change", {
+    await win.webContents.send("server-status-change", {
       status: false,
       message: "Stopped",
     });
   });
 }
+
+ipcMain.handle("server:start", async () => {
+  await startSmtpServer();
+});
+
+ipcMain.handle("server:stop", async () => {
+  await stopSmtpServer();
+});
+
+ipcMain.handle("restart-app", () => {
+  app.relaunch({
+    args: process.argv.slice(1).concat(["--relaunch"]),
+  });
+
+  app.exit(0);
+});
 
 async function createWindow() {
   const windowBounds = await settings.get("window-size");
@@ -188,14 +212,6 @@ async function createWindow() {
 
     win.center();
   });
-
-  ipcMain.handle("server:start", async () => {
-    await startSmtpServer();
-  });
-
-  ipcMain.handle("server:stop", async () => {
-    await stopSmtpServer();
-  });
 }
 
 app.on("activate", async () => {
@@ -224,8 +240,6 @@ app.on("ready", async () => {
   }
 
   await createWindow();
-
-  await startSmtpServer();
 });
 
 // Exit cleanly on request from parent process in development mode.
