@@ -1,8 +1,15 @@
-module.exports = {
+import { app, remote } from "electron";
+
+const path =
+  remote && remote.app
+    ? remote.app.getPath("userData")
+    : app.getPath("userData");
+
+export default {
   development: {
     client: "sqlite3",
     connection: {
-      filename: "./db/dev.sqlite3",
+      filename: `${path}/dev.sqlite3`,
     },
     pool: {
       afterCreate: (conn, cb) => {
@@ -18,12 +25,11 @@ module.exports = {
   production: {
     client: "sqlite3",
     connection: {
-      filename: "./db/posta.sqlite3",
+      filename: `${path}/posta.sqlite3`,
     },
     pool: {
       afterCreate: (conn, cb) => {
         conn.run("PRAGMA foreign_keys = ON", cb);
-        conn.run("PRAGMA encoding='UTF-8'", cb);
       },
     },
     migrations: {

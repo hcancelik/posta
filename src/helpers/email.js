@@ -1,11 +1,5 @@
-import knex from "knex";
-import knexfile from "../../knexfile";
-
-const dbConfig = knexfile[process.env.NODE_ENV];
-const db = knex(dbConfig);
-
 export default {
-  saveEmail: async (mailbox, email, raw) => {
+  saveEmail: async (db, mailbox, email, raw) => {
     await db("mailboxes")
       .insert({ name: mailbox, created_at: new Date().toISOString() })
       .onConflict("name")
