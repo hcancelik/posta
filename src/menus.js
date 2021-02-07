@@ -1,4 +1,4 @@
-import { autoUpdater } from "electron-updater";
+import { checkForUpdates } from "./updater";
 
 const { shell, ipcMain } = require("electron");
 
@@ -15,8 +15,8 @@ const template = [
             { role: "about" },
             {
               label: "Check For Updates",
-              click: async () => {
-                await autoUpdater.checkForUpdatesAndNotify();
+              click: async (menuItem) => {
+                await checkForUpdates(menuItem);
               },
             },
             { type: "separator" },
