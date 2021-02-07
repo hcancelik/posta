@@ -30,13 +30,15 @@ autoUpdater.on("update-available", async () => {
 });
 
 autoUpdater.on("update-not-available", async () => {
-  await dialog.showMessageBox({
-    title: "No Updates Available",
-    message: "Current version is up-to-date.",
-  });
+  if (updater) {
+    await dialog.showMessageBox({
+      title: "No Updates Available",
+      message: "Current version is up-to-date.",
+    });
 
-  updater.enabled = true;
-  updater = null;
+    updater.enabled = true;
+    updater = null;
+  }
 });
 
 autoUpdater.on("update-downloaded", () => {
