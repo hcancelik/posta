@@ -102,7 +102,7 @@ const template = [
       {
         label: "Learn More About Posta",
         click: async () => {
-          await shell.openExternal(process.env.APP_URL);
+          await shell.openExternal(process.env.VUE_APP_URL);
         },
       },
     ],
