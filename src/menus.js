@@ -64,8 +64,7 @@ const template = [
   {
     label: "View",
     submenu: [
-      { role: "reload" },
-      { role: "forceReload" },
+      ...(isDevelopment ? [{ role: "reload" }, { role: "forceReload" }] : []),
       { type: "separator" },
       { role: "resetZoom" },
       { role: "zoomIn" },
