@@ -24,10 +24,10 @@
             v-model="status"
             @change="changeServerStatus"
           />
-          <span class="text-green-700 font-semibold" v-if="status">
-            Running...
-          </span>
-          <span class="text-red-700 font-semibold" v-else>
+          <span
+            class="font-semibold"
+            :class="{ 'text-green-700': status, 'text-red-700': !status }"
+          >
             {{ statusMessage }}
           </span>
         </div>
@@ -55,6 +55,21 @@
             On
           </span>
           <span class="text-gray-500 font-semibold" v-else>Off</span>
+        </div>
+      </BoxRow>
+
+      <BoxRow
+        label="Reset Settings"
+        sub-header="This will reset all settings to original state"
+      >
+        <div class="flex items-center">
+          <button
+            @click="resetSettings"
+            class="bg-red-600 text-white px-4 py-2 rounded shadow transform active:translate-y-0.5 outline-none active:outline-none focus:outline-none"
+          >
+            Reset
+          </button>
+          <p class="text-gray-400 ml-4">App will restart.</p>
         </div>
       </BoxRow>
     </Box>
@@ -90,6 +105,10 @@ export default {
     this.port = (await settings.get("port")) || "2525";
     this.status = await settings.get("server-running");
 
+    if (this.status) {
+      this.statusMessage = "Running";
+    }
+
     const notificationSoundSetting = await settings.get("notification-sound");
 
     this.notificationSound =
@@ -115,6 +134,8 @@ export default {
     },
     async stopServer() {
       await ipcRenderer.invoke("server:stop").then(() => {
+        this.status = false;
+        this.statusMessage = "";
         this.$toast.warning("Server is stopped.");
       });
     },
@@ -125,6 +146,21 @@ export default {
       await ipcRenderer.invoke("theme:change", this.theme);
 
       await this.updateSetting("theme", this.theme);
+    },
+    async resetSettings() {
+      await settings.set({
+        theme: "system",
+        port: 2525,
+        "notification-sound": true,
+        "window-size": {
+          width: 1600,
+          height: 1200,
+          x: null,
+          y: null,
+        },
+      });
+
+      await ipcRenderer.invoke("restart-app");
     },
   },
 };
