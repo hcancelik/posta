@@ -1,7 +1,7 @@
 <template>
   <div class="px-6 py-6">
     <h1
-      class="text-4xl font-bold mb-4 px-0.5 tracking-tight dark:text-gray-200"
+      class="text-3xl font-bold mb-4 px-0.5 tracking-tight dark:text-gray-200"
     >
       {{ email.subject }}
     </h1>

@@ -53,7 +53,7 @@
           class="w-full px-4 py-4 list-item flex flex-row flex-no-wrap"
           :class="{
             'selected-email': selectedEmail && selectedEmail.id === email.id,
-            'font-extrabold': !email.read,
+            'font-bold': !email.read,
           }"
           @click="showEmail(email)"
           @contextmenu="openContextMail(email)"

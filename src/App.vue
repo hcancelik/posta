@@ -3,8 +3,8 @@
     <div class="w-16 bg-gray-200 dark:bg-gray-900">
       <Navigation />
     </div>
-    <div class="flex-1 flex overflow-hidden">
-      <div class="w-full">
+    <div class="flex-1 flex overflow-hidden h-full">
+      <div class="w-full h-full">
         <transition>
           <div
             v-if="serverError"
@@ -15,7 +15,7 @@
         </transition>
         <router-view v-slot="{ Component }">
           <transition :name="transitionName" mode="out-in" appear>
-            <component :is="Component" />
+            <component :is="Component" class="h-full" />
           </transition>
         </router-view>
       </div>
