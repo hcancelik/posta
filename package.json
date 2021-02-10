@@ -1,7 +1,7 @@
 {
   "name": "posta",
   "productName": "Posta",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Posta Local Email Testing",
   "author": {
     "name": "H.Can Celik",
@@ -17,7 +17,9 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "knex:reset": "knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "publish": "npm run electron:build -- -p always"
+    "publish": "npm run electron:build -- -mw -p always",
+    "build:win": "npm run electron:build -- --win nsis",
+    "build:linux": "npm run electron:build -- --linux deb"
   },
   "main": "background.js",
   "dependencies": {
@@ -25,8 +27,8 @@
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.6.5",
-    "electron": "^11.0.0",
     "electron-devtools-installer": "^3.1.0",
+    "electron-log": "^4.3.1",
     "electron-settings": "^4.0.2",
     "electron-updater": "^4.3.5",
     "highlight.js": "^10.5.0",
@@ -51,7 +53,9 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
+    "electron": "^11.0.0",
     "electron-notarize": "^1.0.0",
+    "electron-rebuild": "^2.3.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",

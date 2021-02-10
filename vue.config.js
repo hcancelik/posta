@@ -4,12 +4,16 @@ module.exports = {
       nodeIntegration: true,
       externals: ["knex", "sqlite3"],
       builderOptions: {
+        productName: "Posta",
         extraResources: ["migrations/*.js"],
         mac: {
           hardenedRuntime: true,
           gatekeeperAssess: false,
           entitlements: "build/entitlements.mac.plist",
           entitlementsInherit: "build/entitlements.mac.plist",
+        },
+        linux: {
+          category: "Utility",
         },
         afterSign: "notarize.js",
         publish: ["github"],

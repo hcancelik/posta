@@ -13,6 +13,8 @@ import knex from "knex";
 import { SMTPServer } from "smtp-server";
 import { simpleParser } from "mailparser";
 import { autoUpdater } from "electron-updater";
+import path from "path";
+import log from "electron-log";
 import template from "./menus";
 import knexfile from "../knexfile";
 import emailHelper from "./helpers/email";
@@ -53,18 +55,23 @@ async function saveWindowBounds() {
 
 // Setup Database
 (async () => {
-  const dbConfig = knexfile[process.env.NODE_ENV];
-  db = knex(dbConfig);
+  try {
+    const dbConfig = knexfile[process.env.NODE_ENV];
+    db = knex(dbConfig);
 
-  let config = {};
+    let config = {};
 
-  if (!isDevelopment) {
-    config = {
-      directory: `${process.resourcesPath}/migrations`,
-    };
+    if (!isDevelopment) {
+      config = {
+        directory: path.join(process.resourcesPath, "migrations"),
+      };
+    }
+
+    await db.migrate.latest(config);
+  } catch (error) {
+    log.warn(error.message);
+    log.warn(JSON.stringify(error));
   }
-
-  await db.migrate.latest(config);
 })();
 
 // Setup SMTP Server
@@ -219,8 +226,6 @@ app.on("activate", async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     await createWindow();
-
-    await startSmtpServer();
   }
 });
 
