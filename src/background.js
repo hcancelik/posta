@@ -13,6 +13,7 @@ import knex from "knex";
 import { SMTPServer } from "smtp-server";
 import { simpleParser } from "mailparser";
 import { autoUpdater } from "electron-updater";
+import path from "path";
 import template from "./menus";
 import knexfile from "../knexfile";
 import emailHelper from "./helpers/email";
@@ -60,7 +61,7 @@ async function saveWindowBounds() {
 
   if (!isDevelopment) {
     config = {
-      directory: `${process.resourcesPath}/migrations`,
+      directory: path.join(process.resourcesPath, "migrations"),
     };
   }
 
