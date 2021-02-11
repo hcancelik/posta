@@ -4,6 +4,7 @@ module.exports = {
       nodeIntegration: true,
       externals: ["knex", "sqlite3"],
       builderOptions: {
+        productName: "Posta",
         extraResources: ["migrations/*.js"],
         mac: {
           hardenedRuntime: true,
