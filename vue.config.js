@@ -14,6 +14,10 @@ module.exports = {
         },
         linux: {
           category: "Utility",
+          target: "deb",
+        },
+        win: {
+          target: "nsis",
         },
         afterSign: "notarize.js",
         publish: ["github"],
