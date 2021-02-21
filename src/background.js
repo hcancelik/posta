@@ -163,6 +163,10 @@ ipcMain.handle("restart-app", () => {
   app.exit(0);
 });
 
+ipcMain.handle("unread-email-count", async (event, count) => {
+  app.setBadgeCount(Number(count));
+});
+
 async function createWindow() {
   const windowBounds = await settings.get("window-size");
 

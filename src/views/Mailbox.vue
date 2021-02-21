@@ -231,6 +231,9 @@ export default {
           updatedEmail.read = true;
 
           this.emails[emailId] = updatedEmail;
+        })
+        .finally(() => {
+          this.emitter.emit("fetch-data");
         });
     },
     deleteEmail() {
@@ -253,6 +256,8 @@ export default {
         })
         .finally(() => {
           this.selectedEmailForContextMenu = null;
+
+          this.emitter.emit("fetch-data");
         });
     },
     checkRemainingEmails(mailboxId) {

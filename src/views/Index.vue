@@ -63,7 +63,7 @@
 
 <script>
 import Inbox from "@/views/template/Inbox";
-import { remote } from "electron";
+import { ipcRenderer, remote } from "electron";
 import NoMailbox from "@/views/components/NoMailbox";
 import dbMixin from "@/mixins/dbMixin";
 import Loading from "@/views/components/Loading";
@@ -89,6 +89,7 @@ export default {
     await this.fetchData();
 
     this.emitter.on("fetch-data", () => this.fetchData());
+    this.emitter.on("count-unread-emails", () => this.countUnreadEmails());
   },
   methods: {
     async fetchData() {
@@ -109,6 +110,8 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+
+          this.countUnreadEmails();
         });
     },
     setupMenu() {
@@ -148,6 +151,13 @@ export default {
         .finally(() => {
           this.selectedMailboxForContextMenu = null;
         });
+    },
+    countUnreadEmails() {
+      const unreadTotal = this.mailboxes.reduce((total, mailbox) => {
+        return total + mailbox.emails;
+      }, 0);
+
+      ipcRenderer.invoke("unread-email-count", unreadTotal);
     },
   },
 };
