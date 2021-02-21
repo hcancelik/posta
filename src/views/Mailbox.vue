@@ -125,17 +125,20 @@ export default {
       return decodeURI(this.$route.query.mailbox || "");
     },
   },
+  watch: {
+    emailId() {
+      this.$nextTick(() => {
+        this.selectEmailById(this.emailId);
+      });
+    },
+  },
   async mounted() {
     await this.fetchData();
 
     this.setupMenu();
 
     if (this.emailId) {
-      const selectedEmail = this.emails.find(
-        (email) => email.id === this.emailId
-      );
-
-      this.showEmail(selectedEmail);
+      this.selectEmailById(this.emailId);
     } else if (this.emails.length > 0) {
       this.showEmail(this.emails[0]);
     }
@@ -207,6 +210,13 @@ export default {
       setTimeout(() => {
         this.markAsRead(email);
       }, 1000);
+    },
+    selectEmailById(emailId) {
+      const selectedEmail = this.emails.find(
+        (email) => email.id === Number(emailId)
+      );
+
+      this.showEmail(selectedEmail);
     },
     async markAsRead(email) {
       this.db("emails")

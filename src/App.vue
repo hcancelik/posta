@@ -62,17 +62,19 @@ export default {
         ),
       });
 
+      this.emitter.emit("fetch-data");
+
       notification.on("click", () => {
+        const emailId = Array.isArray(email.id) ? email.id[0] : email.id;
+
         this.$router.push({
           name: "mailbox",
-          params: { mailboxId: email.mailboxId },
-          query: { emailId: email.id, mailbox: mailboxName },
+          params: { mailboxId: email.mailboxId, emailId },
+          query: { mailbox: mailboxName },
         });
       });
 
       notification.show();
-
-      this.emitter.emit("fetch-data");
     });
 
     ipcRenderer.on("server-status-change", async (event, data) => {
