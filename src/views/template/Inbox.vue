@@ -12,7 +12,7 @@
           </h2>
         </div>
         <div
-          class="overflow-y-scroll h-full"
+          class="overflow-y-scroll h-full no-scrollbar"
           id="sidebar"
           @scroll="handleScroll"
         >
