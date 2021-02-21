@@ -144,8 +144,46 @@ export default {
     }
 
     this.emitter.on("fetch-data", () => this.fetchData());
+
+    window.addEventListener("keydown", this.setupKeyPress);
+  },
+  unmounted() {
+    window.removeEventListener("keydown", this.setupKeyPress);
   },
   methods: {
+    setupKeyPress(event) {
+      if (["ArrowDown", "ArrowUp"].indexOf(event.code) > -1) {
+        event.preventDefault();
+
+        if (event.code === "ArrowDown") {
+          this.selectPreviousEmail();
+        } else if (event.code === "ArrowUp") {
+          this.selectNextEmail();
+        }
+      }
+    },
+    selectPreviousEmail() {
+      if (this.selectedEmail) {
+        const index = this.emails.findIndex(
+          (email) => email.id === this.selectedEmail.id
+        );
+
+        if (this.emails[index + 1]) {
+          this.showEmail(this.emails[index + 1]);
+        }
+      }
+    },
+    selectNextEmail() {
+      if (this.selectedEmail) {
+        const index = this.emails.findIndex(
+          (email) => email.id === this.selectedEmail.id
+        );
+
+        if (this.emails[index - 1]) {
+          this.showEmail(this.emails[index - 1]);
+        }
+      }
+    },
     handleScroll(event) {
       if (
         event.target.scrollTop + event.target.clientHeight >=
