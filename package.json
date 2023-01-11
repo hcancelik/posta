@@ -31,7 +31,7 @@
     "electron-updater": "^4.3.5",
     "highlight.js": "^10.5.0",
     "install": "^0.13.0",
-    "knex": "^0.21.16",
+    "knex": "^2.4.0",
     "mailparser": "^3.0.1",
     "mitt": "^2.1.0",
     "npm": "^6.14.11",
